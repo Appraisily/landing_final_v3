@@ -11,6 +11,8 @@ export default defineConfig({
     target: 'esnext',
     minify: 'terser',
     cssMinify: true,
+    reportCompressedSize: false,
+    chunkSizeWarningLimit: 1000,
     terserOptions: {
       compress: {
         drop_console: true,
@@ -22,15 +24,16 @@ export default defineConfig({
         manualChunks: {
           'react-vendor': ['react', 'react-dom'],
           'lucide': ['lucide-react'],
-          'components': [
-            './src/components/Hero.tsx',
-            './src/components/Services.tsx',
-            './src/components/Process.tsx'
+          'ui': [
+            './src/components/ui/Button.tsx',
+            './src/components/ui/Card.tsx',
+            './src/components/ui/Container.tsx',
+            './src/components/ui/Grid.tsx',
+            './src/components/ui/Icon.tsx'
           ]
         }
       }
-    },
-    chunkSizeWarningLimit: 1000
+    }
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'lucide-react']

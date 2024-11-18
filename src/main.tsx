@@ -1,19 +1,18 @@
-import { lazy, Suspense } from 'react';
+import React from 'react';
 import { createRoot } from 'react-dom/client';
+import App from './App';
 import './index.css';
 
-// Lazy load App component
-const App = lazy(() => import('./App'));
+const rootElement = document.getElementById('root');
 
-// Loading fallback
-const LoadingFallback = () => (
-  <div className="min-h-screen bg-white flex items-center justify-center">
-    <div className="animate-pulse text-primary">Loading...</div>
-  </div>
-);
+if (!rootElement) {
+  throw new Error('Root element not found');
+}
 
-createRoot(document.getElementById('root')!).render(
-  <Suspense fallback={<LoadingFallback />}>
+const root = createRoot(rootElement);
+
+root.render(
+  <React.StrictMode>
     <App />
-  </Suspense>
+  </React.StrictMode>
 );

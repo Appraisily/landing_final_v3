@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Camera, FileCheck, Scale, Shield, Search, DollarSign, History, FileText, Landmark, Receipt, FileSpreadsheet, Award, X, Play } from 'lucide-react';
+import { Scale, Shield, FileCheck, Search, DollarSign, History, FileText, Landmark, Receipt, FileSpreadsheet, Award, X, Play } from 'lucide-react';
 
 interface VideoModalProps {
   isOpen: boolean;
@@ -46,7 +46,7 @@ function VideoModal({ isOpen, onClose, videoId, title }: VideoModalProps) {
   );
 }
 
-export default function Services() {
+function Services() {
   const [videoModal, setVideoModal] = useState<{
     isOpen: boolean;
     videoId: string;
@@ -122,7 +122,10 @@ export default function Services() {
         
         <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
           {services.map((service) => (
-            <div key={service.title} className="flex flex-col border border-gray-200 rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-200">
+            <div 
+              key={service.title} 
+              className="flex flex-col border border-gray-200 rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-200"
+            >
               <div className="mb-6">
                 <service.icon className="h-8 w-8 text-primary" />
               </div>
@@ -171,3 +174,5 @@ export default function Services() {
     </div>
   );
 }
+
+export default Services;

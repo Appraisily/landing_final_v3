@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-interface Props {
+interface VideoBackgroundProps {
   fallbackImage: string;
 }
 
-export default function VideoBackground({ fallbackImage }: Props) {
-  const [currentVideo, setCurrentVideo] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
+export default function VideoBackground({ fallbackImage }: VideoBackgroundProps) {
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const preloadedVideos = useRef<HTMLVideoElement[]>([]);
+  const nextVideoRef = useRef<HTMLVideoElement>(null);
   
   const videos = [
     'https://ik.imagekit.io/appraisily/Videos/hero1.mp4?tr=q-35',
@@ -18,83 +18,68 @@ export default function VideoBackground({ fallbackImage }: Props) {
     'https://ik.imagekit.io/appraisily/Videos/hero5.mp4?tr=q-35'
   ];
 
-  // Preload videos in sequence
+  // Preload next video while current one is playing
   useEffect(() => {
-    let mounted = true;
-    let currentIndex = 0;
+    if (!nextVideoRef.current) return;
 
-    const loadNextVideo = () => {
-      if (!mounted || currentIndex >= videos.length) return;
+    const nextIndex = (currentVideoIndex + 1) % videos.length;
+    nextVideoRef.current.src = videos[nextIndex];
+    nextVideoRef.current.load();
+  }, [currentVideoIndex]);
 
-      const video = document.createElement('video');
-      video.playsInline = true;
-      video.muted = true;
-      video.crossOrigin = 'anonymous';
-      video.src = videos[currentIndex];
-
-      video.addEventListener('loadeddata', () => {
-        if (!mounted) return;
-        preloadedVideos.current[currentIndex] = video;
-        currentIndex++;
-        loadNextVideo();
-      }, { once: true });
-
-      video.load();
-    };
-
-    // Start loading after a short delay
-    const timer = setTimeout(loadNextVideo, 1000);
-
-    return () => {
-      mounted = false;
-      clearTimeout(timer);
-    };
-  }, []);
-
-  // Handle video playback
+  // Handle video transitions
   useEffect(() => {
-    if (!videoRef.current || !preloadedVideos.current[currentVideo]) return;
-    
+    if (!videoRef.current || !nextVideoRef.current) return;
+
     const video = videoRef.current;
-    let mounted = true;
+    const nextVideo = nextVideoRef.current;
 
-    const playNextVideo = async () => {
-      if (!mounted) return;
-
-      try {
-        video.src = preloadedVideos.current[currentVideo].src;
-        await video.load();
-        await video.play();
-        setIsPlaying(true);
-      } catch (error) {
-        console.error('Video playback error:', error);
-      }
+    const handleVideoEnd = () => {
+      // Switch to next video
+      const nextIndex = (currentVideoIndex + 1) % videos.length;
+      setCurrentVideoIndex(nextIndex);
+      
+      // Swap video elements
+      video.src = nextVideo.src;
+      video.load();
+      video.play()
+        .catch(error => console.error('Error playing video:', error));
     };
 
-    const handleEnded = () => {
-      if (!mounted) return;
-      const nextVideo = (currentVideo + 1) % videos.length;
-      setCurrentVideo(nextVideo);
+    video.addEventListener('ended', handleVideoEnd);
+    return () => video.removeEventListener('ended', handleVideoEnd);
+  }, [currentVideoIndex]);
+
+  // Initial video load
+  useEffect(() => {
+    if (!videoRef.current) return;
+
+    const video = videoRef.current;
+    
+    // Start with first video
+    video.src = videos[0];
+    video.load();
+
+    // Play when loaded
+    const handleCanPlay = () => {
+      video.play()
+        .then(() => setIsVideoPlaying(true))
+        .catch(error => console.error('Error playing initial video:', error));
     };
 
-    video.addEventListener('ended', handleEnded);
-    playNextVideo();
-
-    return () => {
-      mounted = false;
-      video.removeEventListener('ended', handleEnded);
-    };
-  }, [currentVideo]);
+    video.addEventListener('canplay', handleCanPlay);
+    return () => video.removeEventListener('canplay', handleCanPlay);
+  }, []);
 
   return (
     <div className="absolute inset-0">
-      {/* Optimized Fallback Image */}
+      {/* Fallback Image */}
       <img
-        className={`h-full w-full object-cover transition-opacity duration-1000 ${
-          isPlaying ? 'opacity-0' : 'opacity-100'
-        }`}
-        src={`${fallbackImage}&tr=w-1920,h-1080,q-50`}
+        src={`${fallbackImage}?tr=w-1920,h-1080,q-50`}
         alt="Background"
+        className={`h-full w-full object-cover transition-opacity duration-1000 ${
+          isVideoPlaying ? 'opacity-0' : 'opacity-100'
+        }`}
         loading="eager"
         decoding="async"
         fetchpriority="high"
@@ -102,18 +87,27 @@ export default function VideoBackground({ fallbackImage }: Props) {
         height="1080"
       />
 
-      {/* Video Player */}
+      {/* Main Video */}
       <video
         ref={videoRef}
         className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${
-          isPlaying ? 'opacity-100' : 'opacity-0'
+          isVideoPlaying ? 'opacity-100' : 'opacity-0'
         }`}
         muted
         playsInline
         crossOrigin="anonymous"
       />
 
-      {/* Optimized Overlay */}
+      {/* Preload Next Video */}
+      <video
+        ref={nextVideoRef}
+        className="hidden"
+        muted
+        playsInline
+        crossOrigin="anonymous"
+      />
+
+      {/* Overlay */}
       <div className="absolute inset-0 bg-gradient-to-r from-gray-900/90 to-gray-900/70" />
     </div>
   );

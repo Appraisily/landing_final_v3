@@ -1,51 +1,102 @@
-import React, { lazy, Suspense } from 'react';
+import React, { Suspense } from 'react';
+import ErrorBoundary from './components/ErrorBoundary';
+import LoadingSpinner from './components/LoadingSpinner';
+
+// Import components
 import Hero from './components/Hero';
 import TrustIndicators from './components/TrustIndicators';
+import Process from './components/Process';
+import ComparisonTable from './components/ComparisonTable';
+import CaseStudies from './components/CaseStudies';
 import Services from './components/Services';
+import SampleReport from './components/SampleReport';
+import Experts from './components/Experts';
+import WhyChooseUs from './components/WhyChooseUs';
+import Testimonials from './components/Testimonials';
+import FAQ from './components/FAQ';
+import Pricing from './components/Pricing';
+import InstantAnalysis from './components/InstantAnalysis';
 
-// Lazy load non-critical components
-const ComparisonTable = lazy(() => import('./components/ComparisonTable'));
-const Process = lazy(() => import('./components/Process'));
-const SampleReport = lazy(() => import('./components/SampleReport'));
-const CaseStudies = lazy(() => import('./components/CaseStudies'));
-const Appraisers = lazy(() => import('./components/Appraisers'));
-const Guarantee = lazy(() => import('./components/Guarantee'));
-const Pricing = lazy(() => import('./components/Pricing'));
-const FAQ = lazy(() => import('./components/FAQ'));
-const Testimonials = lazy(() => import('./components/Testimonials'));
-const InstantAnalysis = lazy(() => import('./components/InstantAnalysis'));
-
-// Import hook
-import { useTawkTo } from './hooks/useTawkTo';
-
-// Loading fallback for lazy components
-const LoadingFallback = () => null;
-
-function App() {
-  useTawkTo();
-
+export default function App() {
   return (
     <div className="min-h-screen bg-white">
-      {/* Critical above-the-fold content */}
-      <Hero />
-      <TrustIndicators />
-      <Services />
+      <ErrorBoundary>
+        <Suspense fallback={<LoadingSpinner />}>
+          <Hero />
+        </Suspense>
+      </ErrorBoundary>
 
-      {/* Lazy loaded content */}
-      <Suspense fallback={<LoadingFallback />}>
-        <ComparisonTable />
-        <Process />
-        <SampleReport />
-        <CaseStudies />
-        <Appraisers />
-        <Guarantee />
-        <Pricing />
-        <FAQ />
-        <Testimonials />
-        <InstantAnalysis />
-      </Suspense>
+      <ErrorBoundary>
+        <Suspense fallback={<LoadingSpinner />}>
+          <TrustIndicators />
+        </Suspense>
+      </ErrorBoundary>
+
+      <ErrorBoundary>
+        <Suspense fallback={<LoadingSpinner />}>
+          <Process />
+        </Suspense>
+      </ErrorBoundary>
+
+      <ErrorBoundary>
+        <Suspense fallback={<LoadingSpinner />}>
+          <ComparisonTable />
+        </Suspense>
+      </ErrorBoundary>
+
+      <ErrorBoundary>
+        <Suspense fallback={<LoadingSpinner />}>
+          <CaseStudies />
+        </Suspense>
+      </ErrorBoundary>
+
+      <ErrorBoundary>
+        <Suspense fallback={<LoadingSpinner />}>
+          <Services />
+        </Suspense>
+      </ErrorBoundary>
+
+      <ErrorBoundary>
+        <Suspense fallback={<LoadingSpinner />}>
+          <SampleReport />
+        </Suspense>
+      </ErrorBoundary>
+
+      <ErrorBoundary>
+        <Suspense fallback={<LoadingSpinner />}>
+          <Experts />
+        </Suspense>
+      </ErrorBoundary>
+
+      <ErrorBoundary>
+        <Suspense fallback={<LoadingSpinner />}>
+          <WhyChooseUs />
+        </Suspense>
+      </ErrorBoundary>
+
+      <ErrorBoundary>
+        <Suspense fallback={<LoadingSpinner />}>
+          <Testimonials />
+        </Suspense>
+      </ErrorBoundary>
+
+      <ErrorBoundary>
+        <Suspense fallback={<LoadingSpinner />}>
+          <FAQ />
+        </Suspense>
+      </ErrorBoundary>
+
+      <ErrorBoundary>
+        <Suspense fallback={<LoadingSpinner />}>
+          <Pricing />
+        </Suspense>
+      </ErrorBoundary>
+
+      <ErrorBoundary>
+        <Suspense fallback={<LoadingSpinner />}>
+          <InstantAnalysis />
+        </Suspense>
+      </ErrorBoundary>
     </div>
   );
 }
-
-export default App;
