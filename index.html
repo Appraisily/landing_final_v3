@@ -49,6 +49,14 @@
     <script type="text/javascript">
       var Tawk_API = Tawk_API || {};
       var Tawk_LoadStart = new Date();
+
+      // Configure widget before loading
+      Tawk_API.onBeforeLoad = function() {
+        Tawk_API.maximize();
+        Tawk_API.hideWidget();
+      };
+
+      // Load widget
       (function(){
         var s1 = document.createElement("script"),
             s0 = document.getElementsByTagName("script")[0];
@@ -59,30 +67,35 @@
         s0.parentNode.insertBefore(s1, s0);
       })();
 
-      // Configure chat widget
+      // Configure widget after loading
       Tawk_API.onLoad = function() {
         Tawk_API.setAttributes({
           'name': 'Visitor',
           'email': '',
           'hash': ''
-        }, function(error) {});
+        });
+
+        // Show widget after 2 seconds
+        setTimeout(function() {
+          Tawk_API.showWidget();
+        }, 2000);
       };
 
       // Custom styling
       Tawk_API.customStyle = {
-        zIndex: 1000,
         visibility: {
           desktop: {
-            position: 'br',
+            position: 'bl', // bottom left
             xOffset: 20,
             yOffset: 20
           },
           mobile: {
-            position: 'br',
+            position: 'bl', // bottom left
             xOffset: 10,
             yOffset: 70
           }
-        }
+        },
+        zIndex: 1000
       };
     </script>
 

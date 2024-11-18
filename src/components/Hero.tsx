@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowRight, Award, Shield, Star, Clock, Sparkles } from 'lucide-react';
 import VideoBackground from './VideoBackground';
 import Logo from './Logo';
+import TrustBar from './TrustBar';
 
 const Hero: React.FC = () => {
   return (
@@ -36,39 +37,18 @@ const Hero: React.FC = () => {
             </div>
           </div>
         </div>
-        
-        <div className="mx-auto max-w-7xl px-6 pb-16">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-4">
-            <div className="flex items-center gap-3 bg-dark-contrast backdrop-blur-sm p-4 rounded-lg ring-1 ring-white/50">
-              <Clock className="h-8 w-8 text-white-high" />
-              <p className="text-white-high font-semibold">24-48h Turnaround</p>
-            </div>
-            <div className="flex items-center gap-3 bg-dark-contrast backdrop-blur-sm p-4 rounded-lg ring-1 ring-white/50">
-              <Award className="h-8 w-8 text-white-high" />
-              <p className="text-white-high font-semibold">Certified Experts</p>
-            </div>
-            <div className="flex items-center gap-3 bg-dark-contrast backdrop-blur-sm p-4 rounded-lg ring-1 ring-white/50">
-              <Shield className="h-8 w-8 text-white-high" />
-              <p className="text-white-high font-semibold">From $59/Item</p>
-            </div>
-            <div className="flex items-center gap-3 bg-dark-contrast backdrop-blur-sm p-4 rounded-lg ring-1 ring-white/50">
-              <Star className="h-8 w-8 text-white-high" />
-              <p className="text-white-high font-semibold">5-Star Rated</p>
-            </div>
-          </div>
+
+        <TrustBar />
+
+        {/* Floating Brand Badge */}
+        <div className="fixed bottom-8 right-8 z-50">
+          <a 
+            href="https://appraisily.com"
+            className="flex items-center gap-2 bg-dark-contrast backdrop-blur-sm rounded-lg px-4 py-2 shadow-lg hover:bg-white/20 transition-all duration-200 ring-1 ring-white/50"
+          >
+            <Logo variant="light" size="sm" />
+          </a>
         </div>
-
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent h-32 pointer-events-none"></div>
-      </div>
-
-      {/* Floating Brand Badge */}
-      <div className="fixed bottom-8 right-8 z-50">
-        <a 
-          href="https://appraisily.com"
-          className="flex items-center gap-2 bg-dark-contrast backdrop-blur-sm rounded-lg px-4 py-2 shadow-lg hover:bg-white/20 transition-all duration-200 ring-1 ring-white/50"
-        >
-          <Logo variant="light" size="sm" />
-        </a>
       </div>
     </div>
   );
