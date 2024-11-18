@@ -6,6 +6,7 @@
     <!-- Critical Resource Hints -->
     <link rel="preconnect" href="https://ik.imagekit.io" crossorigin>
     <link rel="dns-prefetch" href="https://ik.imagekit.io">
+    <link rel="preconnect" href="https://www.google-analytics.com" crossorigin>
     
     <!-- Inline Critical CSS -->
     <style>
@@ -44,26 +45,27 @@
       fetchpriority="high"
     >
     
-    <!-- Deferred Analytics -->
-    <script>
+    <!-- Minimal GA4 Implementation -->
+    <script async>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      
-      // Load GA after page is interactive
+
+      // Defer GA loading until after page load
       window.addEventListener('load', () => {
         requestIdleCallback(() => {
           const script = document.createElement('script');
-          script.src = 'https://www.googletagmanager.com/gtag/js?id=G-V8T1NRDNC6';
+          script.src = 'https://www.google-analytics.com/g/collect?v=2&tid=G-V8T1NRDNC6';
           script.async = true;
           document.head.appendChild(script);
-          
-          script.onload = () => {
-            gtag('js', new Date());
-            gtag('config', 'G-V8T1NRDNC6', {
-              send_page_view: true
-            });
-          };
-        });
+
+          // Initialize GA4
+          gtag('js', new Date());
+          gtag('config', 'G-V8T1NRDNC6', {
+            send_page_view: true,
+            transport_url: 'https://www.google-analytics.com/g/collect',
+            first_party_collection: true
+          });
+        }, { timeout: 3000 });
       });
     </script>
 
