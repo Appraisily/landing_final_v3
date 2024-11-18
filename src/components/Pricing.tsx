@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shield, CreditCard, Lock, DollarSign, CheckCircle2, FileText, Camera, Search, Award, FileCheck, Wallet } from 'lucide-react';
+import { Shield, CreditCard, Lock, DollarSign, CheckCircle2, FileText, Camera, Search, Award, FileCheck, Wallet, ArrowRight } from 'lucide-react';
 
 export default function Pricing() {
   const features = [
@@ -71,18 +71,17 @@ export default function Pricing() {
               Each appraisal includes a comprehensive evaluation of your item with detailed documentation and market analysis.
             </p>
             <div className="mt-10 flex items-center gap-x-4">
-              <h4 className="flex-none text-sm font-semibold leading-6 text-[#007bff]">What's included</h4>
+              <h4 className="flex-none text-sm font-semibold leading-6 text-primary">What's included</h4>
               <div className="h-px flex-auto bg-gray-100"></div>
             </div>
             <ul className="mt-8 grid grid-cols-1 gap-4 text-sm leading-6 text-gray-600 sm:grid-cols-2">
               {features.map((feature) => (
                 <li key={feature.text} className="flex gap-x-3">
-                  <feature.icon className="h-6 w-5 flex-none text-[#007bff]" aria-hidden="true" />
+                  <feature.icon className="h-6 w-5 flex-none text-primary" aria-hidden="true" />
                   {feature.text}
                 </li>
               ))}
             </ul>
-            <p className="mt-6 text-sm text-gray-500">One-time fee per item</p>
           </div>
           <div className="-mt-2 p-2 lg:mt-0 lg:w-full lg:max-w-md lg:flex-shrink-0">
             <div className="rounded-2xl bg-gray-50 py-10 text-center ring-1 ring-inset ring-gray-900/5 lg:flex lg:flex-col lg:justify-center lg:py-16">
@@ -93,10 +92,10 @@ export default function Pricing() {
                   <span className="text-sm font-semibold leading-6 tracking-wide text-gray-600">USD</span>
                 </p>
                 <a
-                  href="https://services.appraisily.com/"
-                  className="mt-10 block w-full rounded-md bg-[#007bff] px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-[#0056b3] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#007bff]"
+                  href="https://appraisily.com/start"
+                  className="mt-10 block w-full rounded-xl bg-primary px-3 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all duration-200"
                 >
-                  Proceed to Secure Checkout
+                  Start Your Appraisal
                 </a>
                 <p className="mt-6 text-xs leading-5 text-gray-600">
                   Satisfaction guaranteed or your money back
@@ -120,6 +119,27 @@ export default function Pricing() {
                     <span>Secure payment processing</span>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Enhanced CTA Section */}
+        <div className="mt-16">
+          <div className="mx-auto max-w-2xl rounded-2xl bg-white p-8 shadow-sm ring-1 ring-gray-200">
+            <div className="text-center">
+              <h3 className="text-2xl font-bold tracking-tight text-gray-900">Ready to Get Started?</h3>
+              <p className="mt-4 text-lg text-gray-600">
+                Get your professional art appraisal today with our expert team
+              </p>
+              <div className="mt-8">
+                <a
+                  href="https://appraisily.com/start"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-4 text-lg font-semibold text-white shadow-md hover:bg-primary/90 hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all duration-200"
+                >
+                  Proceed to Secure Checkout
+                  <ArrowRight className="h-5 w-5" />
+                </a>
               </div>
             </div>
           </div>

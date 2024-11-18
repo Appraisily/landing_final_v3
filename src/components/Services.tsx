@@ -124,14 +124,14 @@ export default function Services() {
           {services.map((service) => (
             <div key={service.title} className="flex flex-col border border-gray-200 rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-200">
               <div className="mb-6">
-                <service.icon className="h-8 w-8 text-[#007bff]" />
+                <service.icon className="h-8 w-8 text-primary" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900">{service.title}</h3>
               <p className="mt-4 text-gray-600 flex-grow">{service.description}</p>
               <ul className="mt-6 space-y-3">
                 {service.features.map((feature) => (
                   <li key={feature.text} className="flex items-start gap-2">
-                    <feature.icon className="h-5 w-5 text-[#007bff] mt-1" />
+                    <feature.icon className="h-5 w-5 text-primary mt-1" />
                     <span className="text-gray-700">{feature.text}</span>
                   </li>
                 ))}
@@ -143,7 +143,7 @@ export default function Services() {
                     videoId: service.action.videoId,
                     title: service.action.title
                   })}
-                  className="group rounded-md bg-[#007bff]/10 px-4 py-2.5 text-sm font-semibold text-[#007bff] hover:bg-[#007bff]/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#007bff] transition-all duration-200"
+                  className="group rounded-md bg-primary/10 px-4 py-2.5 text-sm font-semibold text-primary hover:bg-primary/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all duration-200"
                 >
                   <span className="flex items-center justify-center gap-2">
                     <Play className="h-4 w-4" />
@@ -151,8 +151,8 @@ export default function Services() {
                   </span>
                 </button>
                 <a
-                  href="https://services.appraisily.com/"
-                  className="rounded-md bg-[#007bff] px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#0056b3] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#007bff] transition-all duration-200 text-center"
+                  href="https://appraisily.com/start"
+                  className="rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all duration-200 text-center"
                 >
                   Select This Service
                 </a>

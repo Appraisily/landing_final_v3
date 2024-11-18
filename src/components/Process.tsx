@@ -34,8 +34,8 @@ export default function Process() {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <div className="flex items-center justify-center gap-2 mb-6">
-            <Clock className="h-6 w-6 text-[#007bff]" />
-            <span className="text-[#007bff] font-semibold">24-48 Hour Turnaround</span>
+            <Clock className="h-6 w-6 text-primary" />
+            <span className="text-primary font-semibold">24-48 Hour Turnaround</span>
           </div>
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
             Fast &amp; Efficient Process
@@ -52,19 +52,19 @@ export default function Process() {
             <div className="space-y-8">
               {steps.map((step, index) => (
                 <div key={step.title} className="relative">
-                  <div className="absolute top-6 left-1/2 w-3 h-3 rounded-full bg-[#007bff] transform -translate-x-1/2" />
+                  <div className="absolute top-6 left-1/2 w-3 h-3 rounded-full bg-primary transform -translate-x-1/2" />
                   
                   <div className={`relative flex ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
                     <div className={`w-[calc(50%-2rem)] ${index % 2 === 0 ? 'pr-8' : 'pl-8'}`}>
                       <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300">
                         <div className="flex items-center gap-4">
                           <div className="flex-shrink-0">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#007bff]/10">
-                              <step.icon className="h-5 w-5 text-[#007bff]" />
+                            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                              <step.icon className="h-5 w-5 text-primary" />
                             </div>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="inline-flex items-center rounded-full bg-[#007bff]/10 px-2.5 py-1 text-xs font-medium text-[#007bff]">
+                            <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">
                               Step {index + 1}
                             </span>
                             <span className="inline-flex items-center rounded-full bg-green-50 px-2.5 py-1 text-xs font-medium text-green-700">
@@ -85,8 +85,8 @@ export default function Process() {
         
         <div className="mt-16 flex justify-center">
           <a
-            href="https://services.appraisily.com"
-            className="rounded-md bg-[#007bff] px-6 py-3 text-lg font-semibold text-white shadow-sm hover:bg-[#0056b3] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#007bff] transition-all duration-200"
+            href="https://appraisily.com/start"
+            className="rounded-md bg-primary px-6 py-3 text-lg font-semibold text-white shadow-sm hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all duration-200"
           >
             Start Your Appraisal Now
           </a>
