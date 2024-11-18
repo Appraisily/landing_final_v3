@@ -42,17 +42,8 @@ export default function VideoBackground({ fallbackImage }: VideoBackgroundProps)
     const nextVideo = nextVideoRef.current;
     if (!video || !nextVideo) return;
 
-    let isCurrentVideoLoaded = false;
-    let isNextVideoLoaded = false;
-
-    // Load current video
-    const loadCurrentVideo = () => {
-      video.src = isMobile ? videos[currentVideo].mobile : videos[currentVideo].desktop;
-      video.load();
-    };
-
-    // Load next video
-    const loadNextVideo = () => {
+    // Preload next video
+    const preloadNextVideo = () => {
       const nextIndex = (currentVideo + 1) % videos.length;
       nextVideo.src = isMobile ? videos[nextIndex].mobile : videos[nextIndex].desktop;
       nextVideo.load();
@@ -60,63 +51,49 @@ export default function VideoBackground({ fallbackImage }: VideoBackgroundProps)
 
     // Handle video ended
     const handleEnded = () => {
-      setIsVideoPlaying(false);
       setCurrentVideo((prev) => (prev + 1) % videos.length);
+      
+      // Swap video elements
+      if (videoRef.current && nextVideoRef.current) {
+        videoRef.current.style.opacity = '0';
+        nextVideoRef.current.style.opacity = '1';
+        
+        // Play the next video
+        nextVideoRef.current.play().catch(console.error);
+        
+        // Swap refs
+        const temp = videoRef.current;
+        videoRef.current = nextVideoRef.current;
+        nextVideoRef.current = temp;
+        
+        // Preload the next video in line
+        preloadNextVideo();
+      }
     };
 
-    // Handle current video loaded
-    const handleCurrentVideoLoaded = () => {
-      isCurrentVideoLoaded = true;
+    // Initial setup
+    video.src = isMobile ? videos[currentVideo].mobile : videos[currentVideo].desktop;
+    video.load();
+
+    video.addEventListener('loadeddata', () => {
       if (!isVideoPlaying) {
         video.play()
-          .then(() => setIsVideoPlaying(true))
-          .catch((error) => {
-            console.error('Error playing current video:', error);
-            setIsVideoPlaying(false);
-          });
+          .then(() => {
+            setIsVideoPlaying(true);
+            preloadNextVideo();
+          })
+          .catch(console.error);
       }
-    };
+    });
 
-    // Handle next video loaded
-    const handleNextVideoLoaded = () => {
-      isNextVideoLoaded = true;
-    };
-
-    // Add event listeners
-    video.addEventListener('loadeddata', handleCurrentVideoLoaded);
     video.addEventListener('ended', handleEnded);
-    nextVideo.addEventListener('loadeddata', handleNextVideoLoaded);
 
-    // Start loading videos
-    loadCurrentVideo();
-    loadNextVideo();
-
-    // Auto-play first video when component mounts
-    const autoPlayTimeout = setTimeout(() => {
-      if (video && !isVideoPlaying) {
-        video.play()
-          .then(() => setIsVideoPlaying(true))
-          .catch((error) => {
-            console.error('Error auto-playing video:', error);
-            setIsVideoPlaying(false);
-          });
-      }
-    }, 1000); // Delay auto-play by 1 second
-
-    // Cleanup
     return () => {
-      clearTimeout(autoPlayTimeout);
-      if (video) {
-        video.removeEventListener('loadeddata', handleCurrentVideoLoaded);
-        video.removeEventListener('ended', handleEnded);
-        video.pause();
-      }
-      if (nextVideo) {
-        nextVideo.removeEventListener('loadeddata', handleNextVideoLoaded);
-        nextVideo.pause();
-      }
+      video.removeEventListener('ended', handleEnded);
+      video.pause();
+      nextVideo.pause();
     };
-  }, [currentVideo, videos, isMobile]);
+  }, [currentVideo, videos, isMobile, isVideoPlaying]);
 
   return (
     <div className="absolute inset-0">
@@ -155,15 +132,13 @@ export default function VideoBackground({ fallbackImage }: VideoBackgroundProps)
         }`}
         muted
         playsInline
-        crossOrigin="anonymous"
       />
 
       <video
         ref={nextVideoRef}
-        className="hidden"
+        className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-1000"
         muted
         playsInline
-        crossOrigin="anonymous"
       />
 
       <div className="absolute inset-0 bg-gradient-to-r from-gray-900/90 to-gray-900/70" />
