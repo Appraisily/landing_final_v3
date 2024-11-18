@@ -13,30 +13,38 @@ export default defineConfig({
     cssMinify: true,
     reportCompressedSize: false,
     chunkSizeWarningLimit: 1000,
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true
-      }
+    modulePreload: {
+      polyfill: false
     },
     rollupOptions: {
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom'],
           'lucide': ['lucide-react'],
-          'ui': [
+          'components': [
             './src/components/ui/Button.tsx',
             './src/components/ui/Card.tsx',
             './src/components/ui/Container.tsx',
             './src/components/ui/Grid.tsx',
             './src/components/ui/Icon.tsx'
+          ],
+          'features': [
+            './src/components/Hero.tsx',
+            './src/components/Services.tsx',
+            './src/components/Process.tsx'
+          ],
+          'secondary': [
+            './src/components/FAQ.tsx',
+            './src/components/Pricing.tsx',
+            './src/components/Testimonials.tsx'
           ]
         }
       }
     }
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'lucide-react']
+    include: ['react', 'react-dom', 'lucide-react'],
+    exclude: ['@tawk.to/tawk-messenger-react']
   },
   server: {
     headers: {
