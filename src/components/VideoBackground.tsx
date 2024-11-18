@@ -15,103 +15,85 @@ const videos = [
 const VideoBackground: React.FC<VideoBackgroundProps> = ({ fallbackImage }) => {
   const [currentVideo, setCurrentVideo] = useState(0);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
-  const [isTransitioning, setIsTransitioning] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const nextVideoRef = useRef<HTMLVideoElement>(null);
   const mountedRef = useRef(true);
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
       mountedRef.current = false;
     };
   }, []);
 
-  // Handle video playback and transitions
   useEffect(() => {
-    const currentVideoEl = videoRef.current;
-    if (!currentVideoEl) return;
+    const video = videoRef.current;
+    if (!video) return;
 
-    // Configure video
-    currentVideoEl.muted = true;
-    currentVideoEl.playsInline = true;
-    currentVideoEl.preload = 'auto';
-
-    // Load current video
-    currentVideoEl.src = videos[currentVideo];
-    currentVideoEl.load();
+    // Optimize video loading
+    video.preload = 'metadata';
+    video.muted = true;
+    video.playsInline = true;
+    video.src = videos[currentVideo];
+    video.load();
 
     // Preload next video
-    const nextIndex = (currentVideo + 1) % videos.length;
-    const preloadLink = document.createElement('link');
-    preloadLink.rel = 'preload';
-    preloadLink.as = 'video';
-    preloadLink.href = videos[nextIndex];
-    document.head.appendChild(preloadLink);
+    const nextVideo = new Audio();
+    nextVideo.preload = 'metadata';
+    nextVideo.src = videos[(currentVideo + 1) % videos.length];
 
     const playVideo = async () => {
       try {
-        setIsTransitioning(true);
-        await currentVideoEl.play();
+        await video.play();
         setIsVideoPlaying(true);
-        setIsTransitioning(false);
       } catch (error) {
         console.debug('Video playback error:', error);
-        handleNextVideo();
       }
     };
 
-    const handleNextVideo = () => {
+    const handleEnded = () => {
       if (!mountedRef.current) return;
       setCurrentVideo((prev) => (prev + 1) % videos.length);
     };
 
-    const handleCanPlay = () => {
-      if (mountedRef.current && currentVideoEl.paused) {
-        playVideo();
-      }
-    };
-
-    // Event listeners
-    currentVideoEl.addEventListener('canplay', handleCanPlay);
-    currentVideoEl.addEventListener('ended', handleNextVideo);
-    currentVideoEl.addEventListener('error', handleNextVideo);
-
-    // Start playback
-    if (currentVideoEl.readyState >= 3) {
-      playVideo();
-    }
+    video.addEventListener('loadedmetadata', playVideo);
+    video.addEventListener('ended', handleEnded);
 
     return () => {
-      if (currentVideoEl) {
-        currentVideoEl.removeEventListener('canplay', handleCanPlay);
-        currentVideoEl.removeEventListener('ended', handleNextVideo);
-        currentVideoEl.removeEventListener('error', handleNextVideo);
-        currentVideoEl.pause();
-        currentVideoEl.removeAttribute('src');
-        currentVideoEl.load();
-      }
-      document.head.removeChild(preloadLink);
+      video.removeEventListener('loadedmetadata', playVideo);
+      video.removeEventListener('ended', handleEnded);
+      video.pause();
+      video.src = '';
+      video.load();
+      nextVideo.src = '';
     };
   }, [currentVideo]);
 
   return (
     <div className="absolute inset-0">
-      {/* Fallback Image */}
+      {/* Optimized Fallback Image */}
       <picture>
+        {/* Mobile - Aggressive optimization */}
         <source
           media="(max-width: 640px)"
-          srcSet={`${fallbackImage}?tr=w-640,h-960,q-60`}
+          srcSet={`${fallbackImage}?tr=w-640,h-960,q-60,bl-30,f-jpg`}
+          type="image/jpeg"
         />
+        {/* Tablet */}
         <source
           media="(max-width: 1024px)"
-          srcSet={`${fallbackImage}?tr=w-1024,h-768,q-60`}
+          srcSet={`${fallbackImage}?tr=w-1024,h-768,q-60,bl-30,f-jpg`}
+          type="image/jpeg"
+        />
+        {/* Desktop - Progressive loading */}
+        <source
+          media="(min-width: 1025px)"
+          srcSet={`${fallbackImage}?tr=w-1920,h-1080,q-50,bl-30,pr-true,f-jpg`}
+          type="image/jpeg"
         />
         <img
-          src={`${fallbackImage}?tr=w-1920,h-1080,q-75`}
+          src={`${fallbackImage}?tr=w-1920,h-1080,q-50,bl-30,pr-true,f-jpg`}
           alt=""
           className={`h-full w-full object-cover transition-opacity duration-1000 ${
-            isVideoPlaying && !isTransitioning ? 'opacity-0' : 'opacity-100'
+            isVideoPlaying ? 'opacity-0' : 'opacity-100'
           }`}
           loading="eager"
           decoding="async"
@@ -121,18 +103,15 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({ fallbackImage }) => {
         />
       </picture>
 
-      {/* Current Video */}
       <video
         ref={videoRef}
         className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${
-          isVideoPlaying && !isTransitioning ? 'opacity-100' : 'opacity-0'
+          isVideoPlaying ? 'opacity-100' : 'opacity-0'
         }`}
         muted
         playsInline
-        autoPlay
       />
 
-      {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-r from-gray-900/90 to-gray-900/70" />
     </div>
   );
