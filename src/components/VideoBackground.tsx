@@ -43,7 +43,12 @@ export default function VideoBackground({ fallbackImage }: VideoBackgroundProps)
       video.src = nextVideo.src;
       video.load();
       video.play()
-        .catch(error => console.error('Error playing video:', error));
+        .catch(error => {
+          console.warn('Video playback error:', error);
+          // On error, try next video
+          const nextIndex = (currentVideoIndex + 2) % videos.length;
+          setCurrentVideoIndex(nextIndex);
+        });
     };
 
     video.addEventListener('ended', handleVideoEnd);
@@ -64,7 +69,11 @@ export default function VideoBackground({ fallbackImage }: VideoBackgroundProps)
     const handleCanPlay = () => {
       video.play()
         .then(() => setIsVideoPlaying(true))
-        .catch(error => console.error('Error playing initial video:', error));
+        .catch(error => {
+          console.warn('Initial video playback error:', error);
+          // On error, try next video
+          setCurrentVideoIndex((prev) => (prev + 1) % videos.length);
+        });
     };
 
     video.addEventListener('canplay', handleCanPlay);

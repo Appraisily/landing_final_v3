@@ -12,27 +12,29 @@
     <link rel="preload" as="image" href="https://ik.imagekit.io/appraisily/WebPage/logo.JPG?tr=w-32,h-32" fetchpriority="high">
     
     <!-- Deferred Analytics -->
-    <script type="module">
-      // Defer analytics loading
-      const loadAnalytics = () => {
-        const script = document.createElement('script');
-        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-V8T1NRDNC6';
-        script.async = true;
-        document.head.appendChild(script);
+    <script>
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          const script = document.createElement('script');
+          script.src = `https://www.googletagmanager.com/gtag/js?id=G-V8T1NRDNC6`;
+          script.async = true;
+          document.head.appendChild(script);
 
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-V8T1NRDNC6');
-      };
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-V8T1NRDNC6', {
+            send_page_view: false // Manually send page views for better control
+          });
 
-      // Load analytics after initial paint
-      requestIdleCallback(() => loadAnalytics());
+          // Send initial page view after analytics loads
+          gtag('event', 'page_view');
+        }, 3000); // Delay analytics load by 3 seconds
+      });
     </script>
 
     <!-- Tawk.to Chat Widget -->
-    <script type="text/javascript">
-      // Defer chat widget loading
+    <script>
       window.addEventListener('load', () => {
         setTimeout(() => {
           var s1 = document.createElement("script");
