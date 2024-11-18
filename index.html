@@ -6,10 +6,10 @@
     <!-- Resource Hints -->
     <link rel="preconnect" href="https://ik.imagekit.io" crossorigin>
     <link rel="dns-prefetch" href="https://ik.imagekit.io">
+    <link rel="preconnect" href="https://embed.tawk.to" crossorigin>
     
     <!-- Critical CSS -->
     <style>
-      /* Inline critical CSS here */
       .bg-white { background-color: #fff; }
       .min-h-screen { min-height: 100vh; }
     </style>
@@ -41,46 +41,49 @@
         });
       };
 
-      // Load analytics on user interaction or visibility
-      const observer = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting) {
-          loadAnalytics();
-          observer.disconnect();
-        }
-      });
-
-      // Start observing when content is loaded
-      document.addEventListener('DOMContentLoaded', () => {
-        observer.observe(document.body);
-      });
-
-      // Fallback: Load after 3 seconds
-      setTimeout(loadAnalytics, 3000);
+      // Load analytics after initial paint
+      requestIdleCallback(() => loadAnalytics());
     </script>
 
-    <!-- Deferred Chat Widget -->
-    <script type="module">
-      // Load chat widget when user scrolls near footer
-      const loadChat = () => {
-        const s1 = document.createElement("script");
+    <!-- Tawk.to Chat Widget -->
+    <script type="text/javascript">
+      var Tawk_API = Tawk_API || {};
+      var Tawk_LoadStart = new Date();
+      (function(){
+        var s1 = document.createElement("script"),
+            s0 = document.getElementsByTagName("script")[0];
         s1.async = true;
         s1.src = 'https://embed.tawk.to/63a083dbb0d6371309d528e2/1gklg645r';
-        s1.setAttribute('crossorigin','*');
-        document.head.appendChild(s1);
+        s1.charset = 'UTF-8';
+        s1.setAttribute('crossorigin', '*');
+        s0.parentNode.insertBefore(s1, s0);
+      })();
+
+      // Configure chat widget
+      Tawk_API.onLoad = function() {
+        Tawk_API.setAttributes({
+          'name': 'Visitor',
+          'email': '',
+          'hash': ''
+        }, function(error) {});
       };
 
-      const observer = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting) {
-          loadChat();
-          observer.disconnect();
+      // Custom styling
+      Tawk_API.customStyle = {
+        zIndex: 1000,
+        visibility: {
+          desktop: {
+            position: 'br',
+            xOffset: 20,
+            yOffset: 20
+          },
+          mobile: {
+            position: 'br',
+            xOffset: 10,
+            yOffset: 70
+          }
         }
-      }, { rootMargin: '200px' });
-
-      // Start observing when page loads
-      window.addEventListener('load', () => {
-        const footer = document.querySelector('footer');
-        if (footer) observer.observe(footer);
-      });
+      };
     </script>
 
     <link rel="icon" type="image/png" href="https://ik.imagekit.io/appraisily/WebPage/logo_new.png?tr=w-32,h-32" />
