@@ -2,42 +2,69 @@
 
 [Edit in StackBlitz next generation editor ⚡️](https://stackblitz.com/~/github.com/Appraisily/landing_final_v3)
 
+## React Hooks Guidelines
+
+To prevent crashes and ensure proper hooks usage:
+
+1. Only call hooks at the top level of your function component
+2. Don't call hooks inside loops, conditions, or nested functions
+3. Always import React when using hooks
+4. Use proper TypeScript types for hooks
+5. Ensure component names start with a capital letter
+6. Export components as named or default exports
+
+```typescript
+// ✅ Correct hooks usage
+import React, { useState, useEffect } from 'react';
+
+const ExampleComponent: React.FC = () => {
+  const [state, setState] = useState(initialValue);
+  
+  useEffect(() => {
+    // Effect code
+  }, []);
+
+  return <div>{/* Component JSX */}</div>;
+};
+
+export default ExampleComponent;
+
+// ❌ Incorrect hooks usage
+function exampleComponent() {
+  if (condition) {
+    const [state, setState] = useState(value); // Don't use hooks in conditions
+  }
+
+  useEffect(() => {}); // Missing dependency array
+}
+```
+
 ## Component Export Guidelines
 
 When creating React components, always use one of these export patterns to avoid the "Module does not provide an export named 'default'" error:
 
 ```typescript
 // Option 1: Default export (Preferred)
-function Component() {
+const Component: React.FC = () => {
   return <div>Component content</div>;
-}
+};
 
 export default Component;
 
 // Option 2: Named export with default
-export const Component = () => {
+export const Component: React.FC = () => {
   return <div>Component content</div>;
 };
 
 export default Component;
 
 // Option 3: Named export (requires named import)
-export const Component = () => {
+export const Component: React.FC = () => {
   return <div>Component content</div>;
 };
 
 // Then import using:
 import { Component } from './Component';
-```
-
-❌ Avoid this pattern as it can cause export errors:
-```typescript
-// Wrong
-const Component = () => {
-  return <div>Component content</div>;
-};
-
-export { Component };
 ```
 
 ## Error Boundaries

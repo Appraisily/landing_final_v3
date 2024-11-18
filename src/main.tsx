@@ -2,13 +2,13 @@ import React, { Suspense, lazy } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 
-// Core components loaded immediately
+// Critical path components
 import Hero from './components/Hero';
 import Process from './components/Process';
 import Services from './components/Services';
 import LoadingSpinner from './components/LoadingSpinner';
 
-// Lazy-loaded components
+// Lazy load non-critical components
 const TrustIndicators = lazy(() => import('./components/TrustIndicators'));
 const ComparisonTable = lazy(() => import('./components/ComparisonTable'));
 const CaseStudies = lazy(() => import('./components/CaseStudies'));
@@ -28,7 +28,7 @@ function App() {
       <Process />
       <Services />
 
-      {/* Lazy loaded components */}
+      {/* Lazy loaded components with IntersectionObserver */}
       <Suspense fallback={<LoadingSpinner />}>
         <TrustIndicators />
         <ComparisonTable />
@@ -46,13 +46,9 @@ function App() {
 }
 
 const rootElement = document.getElementById('root');
-
-if (!rootElement) {
-  throw new Error('Root element not found');
-}
+if (!rootElement) throw new Error('Root element not found');
 
 const root = createRoot(rootElement);
-
 root.render(
   <React.StrictMode>
     <App />

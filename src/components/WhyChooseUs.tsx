@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import { Users, Camera, FileCheck, LockKeyhole, Star, Award, Globe2 } from 'lucide-react';
 
 const features = [
@@ -35,21 +35,6 @@ const features = [
 ];
 
 const WhyChooseUs: React.FC = () => {
-  const parallaxRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (parallaxRef.current) {
-        const scrolled = window.scrollY;
-        const rate = scrolled * 0.5;
-        parallaxRef.current.style.transform = `translate3d(0, ${rate}px, 0)`;
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   return (
     <div className="bg-white py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">

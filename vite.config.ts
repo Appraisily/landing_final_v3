@@ -9,34 +9,26 @@ export default defineConfig({
   ],
   build: {
     target: 'esnext',
-    minify: 'terser',
+    minify: 'esbuild',
     cssMinify: true,
     reportCompressedSize: false,
     chunkSizeWarningLimit: 1000,
-    modulePreload: {
-      polyfill: false
-    },
     rollupOptions: {
       output: {
         manualChunks: {
-          'react-vendor': ['react', 'react-dom'],
-          'lucide': ['lucide-react'],
-          'components': [
-            './src/components/ui/Button.tsx',
-            './src/components/ui/Card.tsx',
-            './src/components/ui/Container.tsx',
-            './src/components/ui/Grid.tsx',
-            './src/components/ui/Icon.tsx'
-          ],
-          'features': [
+          'react-core': ['react', 'react-dom'],
+          'icons': ['lucide-react'],
+          'critical': [
             './src/components/Hero.tsx',
-            './src/components/Services.tsx',
-            './src/components/Process.tsx'
+            './src/components/Process.tsx',
+            './src/components/Services.tsx'
           ],
-          'secondary': [
+          'deferred': [
             './src/components/FAQ.tsx',
             './src/components/Pricing.tsx',
-            './src/components/Testimonials.tsx'
+            './src/components/Testimonials.tsx',
+            './src/components/WhyChooseUs.tsx',
+            './src/components/CaseStudies.tsx'
           ]
         }
       }
