@@ -18,35 +18,42 @@ export default function VideoBackground({ fallbackImage }: Props) {
     'https://ik.imagekit.io/appraisily/Videos/hero5.mp4?tr=q-35'
   ];
 
-  // Preload all videos on mount
+  // Preload videos in sequence
   useEffect(() => {
-    preloadedVideos.current = videos.map(() => {
+    let mounted = true;
+    let currentIndex = 0;
+
+    const loadNextVideo = () => {
+      if (!mounted || currentIndex >= videos.length) return;
+
       const video = document.createElement('video');
       video.playsInline = true;
       video.muted = true;
       video.crossOrigin = 'anonymous';
-      return video;
-    });
+      video.src = videos[currentIndex];
 
-    // Start preloading all videos
-    videos.forEach((src, index) => {
-      const video = preloadedVideos.current[index];
-      video.src = src;
+      video.addEventListener('loadeddata', () => {
+        if (!mounted) return;
+        preloadedVideos.current[currentIndex] = video;
+        currentIndex++;
+        loadNextVideo();
+      }, { once: true });
+
       video.load();
-    });
+    };
+
+    // Start loading after a short delay
+    const timer = setTimeout(loadNextVideo, 1000);
 
     return () => {
-      preloadedVideos.current.forEach(video => {
-        video.pause();
-        video.removeAttribute('src');
-        video.load();
-      });
+      mounted = false;
+      clearTimeout(timer);
     };
   }, []);
 
   // Handle video playback
   useEffect(() => {
-    if (!videoRef.current) return;
+    if (!videoRef.current || !preloadedVideos.current[currentVideo]) return;
     
     const video = videoRef.current;
     let mounted = true;
@@ -55,15 +62,12 @@ export default function VideoBackground({ fallbackImage }: Props) {
       if (!mounted) return;
 
       try {
-        // Use the preloaded video's src
         video.src = preloadedVideos.current[currentVideo].src;
         await video.load();
         await video.play();
         setIsPlaying(true);
       } catch (error) {
-        if (error instanceof Error && error.name !== 'AbortError') {
-          console.error('Video playback error:', error);
-        }
+        console.error('Video playback error:', error);
       }
     };
 
@@ -82,37 +86,20 @@ export default function VideoBackground({ fallbackImage }: Props) {
     };
   }, [currentVideo]);
 
-  // Add video source hint to browser
-  useEffect(() => {
-    const hints = videos.map(src => {
-      const link = document.createElement('link');
-      link.rel = 'preload';
-      link.as = 'video';
-      link.href = src;
-      link.type = 'video/mp4';
-      link.crossOrigin = 'anonymous';
-      return link;
-    });
-
-    hints.forEach(link => document.head.appendChild(link));
-
-    return () => {
-      hints.forEach(link => document.head.removeChild(link));
-    };
-  }, []);
-
   return (
     <div className="absolute inset-0">
-      {/* Fallback Image */}
+      {/* Optimized Fallback Image */}
       <img
         className={`h-full w-full object-cover transition-opacity duration-1000 ${
           isPlaying ? 'opacity-0' : 'opacity-100'
         }`}
-        src="https://ik.imagekit.io/appraisily/WebPage/hero_background.jpg?tr=q-50"
+        src={`${fallbackImage}&tr=w-1920,h-1080,q-50`}
         alt="Background"
         loading="eager"
         decoding="async"
         fetchpriority="high"
+        width="1920"
+        height="1080"
       />
 
       {/* Video Player */}
@@ -126,7 +113,7 @@ export default function VideoBackground({ fallbackImage }: Props) {
         crossOrigin="anonymous"
       />
 
-      {/* Overlay */}
+      {/* Optimized Overlay */}
       <div className="absolute inset-0 bg-gradient-to-r from-gray-900/90 to-gray-900/70" />
     </div>
   );

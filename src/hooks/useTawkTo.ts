@@ -18,7 +18,6 @@ export const useTawkTo = () => {
         s1.setAttribute('crossorigin', '*');
         s1.onerror = () => {
           console.warn('Tawk.to chat widget failed to load');
-          // Remove the failed script
           s1.remove();
         };
         
@@ -31,11 +30,13 @@ export const useTawkTo = () => {
       }
     };
 
-    // Delay loading of chat widget to prioritize core content
-    const timer = setTimeout(loadTawkTo, 3000);
-    
-    return () => {
-      clearTimeout(timer);
-    };
+    // Load chat widget when browser is idle
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(() => {
+        setTimeout(loadTawkTo, 5000);
+      });
+    } else {
+      setTimeout(loadTawkTo, 5000);
+    }
   }, []);
 };

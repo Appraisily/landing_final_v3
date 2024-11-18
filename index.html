@@ -2,16 +2,53 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-PSLHDGM');</script>
-    <!-- End Google Tag Manager -->
+    <!-- Preload Critical Resources -->
+    <link rel="preconnect" href="https://ik.imagekit.io" crossorigin>
+    <link rel="dns-prefetch" href="https://ik.imagekit.io">
+    
+    <!-- Optimized Analytics Loading -->
+    <script type="module">
+      // Defer analytics loading
+      const loadAnalytics = () => {
+        // GA4
+        const gaScript = document.createElement('script');
+        gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-V8T1NRDNC6';
+        gaScript.async = true;
+        document.head.appendChild(gaScript);
+
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-V8T1NRDNC6', {
+          'send_page_view': false
+        });
+
+        // Send pageview after content loads
+        window.addEventListener('load', () => {
+          gtag('event', 'page_view');
+        });
+      };
+
+      // Load analytics after initial paint
+      requestIdleCallback(() => loadAnalytics());
+    </script>
     
     <link rel="icon" type="image/jpeg" href="https://ik.imagekit.io/appraisily/WebPage/logo.JPG?tr=w-32,h-32" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Preload Critical Assets -->
+    <link 
+      rel="preload" 
+      href="https://ik.imagekit.io/appraisily/WebPage/hero_background.jpg?tr=w-1920,h-1080,q-50" 
+      as="image"
+      fetchpriority="high"
+    >
+    <link 
+      rel="preload" 
+      href="https://ik.imagekit.io/appraisily/WebPage/logo.JPG?tr=w-32,h-32" 
+      as="image"
+      fetchpriority="high"
+    >
     
     <!-- Primary Meta Tags -->
     <title>Expert Art Appraisals | Professional Valuation Services</title>
@@ -37,27 +74,27 @@
     <meta name="author" content="Appraisily">
     <meta name="robots" content="index, follow">
     
-    <!-- Preload Critical Resources -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://ik.imagekit.io">
-    <link rel="preload" as="image" href="https://ik.imagekit.io/appraisily/WebPage/logo.JPG?tr=w-32,h-32" />
-    
-    <!-- PWA Meta Tags -->
-    <meta name="theme-color" content="#007bff">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
     <!-- Performance Meta Tags -->
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    
+    <!-- Cache Control -->
     <meta http-equiv="Cache-Control" content="max-age=31536000">
+    
+    <!-- Critical CSS -->
+    <style>
+      /* Inline critical CSS */
+      .hero-content {
+        opacity: 0;
+        animation: fadeIn 0.5s ease-out forwards;
+      }
+      @keyframes fadeIn {
+        to { opacity: 1; }
+      }
+      .bg-primary { background-color: rgb(37 99 235); }
+      .text-primary { color: rgb(37 99 235); }
+    </style>
   </head>
   <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PSLHDGM"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-    
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

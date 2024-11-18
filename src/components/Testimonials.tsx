@@ -55,7 +55,7 @@ export default function Testimonials() {
             Trusted by Collectors Worldwide
           </h2>
           <p className="mt-6 text-lg leading-8 text-gray-600">
-            See what our clients say about our appraisal services on Trustpilot
+            See what our clients say about our appraisal services
           </p>
         </div>
 
@@ -73,7 +73,7 @@ export default function Testimonials() {
                 </div>
                 <img
                   src={review.image}
-                  alt={`${review.author}'s review on Trustpilot`}
+                  alt={`${review.author}'s review`}
                   className="mt-6 rounded-lg shadow-sm w-full h-auto"
                   loading="lazy"
                   decoding="async"
@@ -85,11 +85,6 @@ export default function Testimonials() {
               <div className="mt-8 border-t border-gray-100 pt-6">
                 <p className="text-sm font-semibold text-gray-900">{review.author}</p>
                 <div className="mt-1 flex items-center gap-x-2">
-                  <img
-                    src="https://cdn.trustpilot.net/brand-assets/4.1.0/logo-white.svg"
-                    alt="Trustpilot"
-                    className="h-5"
-                  />
                   <span className="text-sm text-gray-500">Verified Review</span>
                 </div>
               </div>
@@ -99,12 +94,10 @@ export default function Testimonials() {
 
         <div className="mt-16 flex justify-center">
           <a
-            href="https://www.trustpilot.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-[#007bff] hover:text-[#0056b3] transition-colors"
+            href="https://appraisily.com/start"
+            className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
           >
-            <span className="text-sm font-semibold">View all reviews on Trustpilot</span>
+            <span className="text-sm font-semibold">Start Your Appraisal</span>
             <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M5 10a.75.75 0 01.75-.75h6.638L10.23 7.29a.75.75 0 111.04-1.08l3.5 3.25a.75.75 0 010 1.08l-3.5 3.25a.75.75 0 11-1.04-1.08l2.158-1.96H5.75A.75.75 0 015 10z" clipRule="evenodd" />
             </svg>
