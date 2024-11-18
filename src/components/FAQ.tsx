@@ -24,7 +24,7 @@ const faqs = [
   }
 ];
 
-export default function FAQ() {
+const FAQ: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
@@ -69,4 +69,6 @@ export default function FAQ() {
       </div>
     </div>
   );
-}
+};
+
+export default FAQ;

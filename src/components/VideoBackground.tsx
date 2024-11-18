@@ -4,112 +4,87 @@ interface VideoBackgroundProps {
   fallbackImage: string;
 }
 
-export default function VideoBackground({ fallbackImage }: VideoBackgroundProps) {
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+const VideoBackground: React.FC<VideoBackgroundProps> = ({ fallbackImage }) => {
   const [currentVideo, setCurrentVideo] = useState(0);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const nextVideoRef = useRef<HTMLVideoElement>(null);
-
-  // Optimize videos for different screen sizes
+  const mountedRef = useRef(false);
+  
   const videos = [
-    {
-      desktop: 'https://ik.imagekit.io/appraisily/Videos/hero1.mp4?tr=w-1920,q-70',
-      mobile: 'https://ik.imagekit.io/appraisily/Videos/hero1.mp4?tr=w-640,q-60'
-    },
-    {
-      desktop: 'https://ik.imagekit.io/appraisily/Videos/hero2.mp4?tr=w-1920,q-70',
-      mobile: 'https://ik.imagekit.io/appraisily/Videos/hero2.mp4?tr=w-640,q-60'
-    },
-    {
-      desktop: 'https://ik.imagekit.io/appraisily/Videos/hero3.mp4?tr=w-1920,q-70',
-      mobile: 'https://ik.imagekit.io/appraisily/Videos/hero3.mp4?tr=w-640,q-60'
-    },
-    {
-      desktop: 'https://ik.imagekit.io/appraisily/Videos/hero4.mp4?tr=w-1920,q-70',
-      mobile: 'https://ik.imagekit.io/appraisily/Videos/hero4.mp4?tr=w-640,q-60'
-    },
-    {
-      desktop: 'https://ik.imagekit.io/appraisily/Videos/hero5.mp4?tr=w-1920,q-70',
-      mobile: 'https://ik.imagekit.io/appraisily/Videos/hero5.mp4?tr=w-640,q-60'
-    }
+    'https://ik.imagekit.io/appraisily/Videos/hero1.mp4?tr=w-1920,q-70',
+    'https://ik.imagekit.io/appraisily/Videos/hero2.mp4?tr=w-1920,q-70',
+    'https://ik.imagekit.io/appraisily/Videos/hero3.mp4?tr=w-1920,q-70',
+    'https://ik.imagekit.io/appraisily/Videos/hero4.mp4?tr=w-1920,q-70',
+    'https://ik.imagekit.io/appraisily/Videos/hero5.mp4?tr=w-1920,q-70'
   ];
 
-  // Detect mobile device
-  const isMobile = window.innerWidth <= 768;
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
 
   useEffect(() => {
     const video = videoRef.current;
-    const nextVideo = nextVideoRef.current;
-    if (!video || !nextVideo) return;
+    if (!video) return;
 
-    // Preload next video
-    const preloadNextVideo = () => {
-      const nextIndex = (currentVideo + 1) % videos.length;
-      nextVideo.src = isMobile ? videos[nextIndex].mobile : videos[nextIndex].desktop;
-      nextVideo.load();
-    };
-
-    // Handle video ended
     const handleEnded = () => {
-      setCurrentVideo((prev) => (prev + 1) % videos.length);
-      
-      // Swap video elements
-      if (videoRef.current && nextVideoRef.current) {
-        videoRef.current.style.opacity = '0';
-        nextVideoRef.current.style.opacity = '1';
-        
-        // Play the next video
-        nextVideoRef.current.play().catch(console.error);
-        
-        // Swap refs
-        const temp = videoRef.current;
-        videoRef.current = nextVideoRef.current;
-        nextVideoRef.current = temp;
-        
-        // Preload the next video in line
-        preloadNextVideo();
+      if (mountedRef.current) {
+        setCurrentVideo((prev) => (prev + 1) % videos.length);
       }
     };
 
-    // Initial setup
-    video.src = isMobile ? videos[currentVideo].mobile : videos[currentVideo].desktop;
-    video.load();
-
-    video.addEventListener('loadeddata', () => {
-      if (!isVideoPlaying) {
-        video.play()
-          .then(() => {
-            setIsVideoPlaying(true);
-            preloadNextVideo();
-          })
-          .catch(console.error);
+    const handleCanPlay = () => {
+      if (mountedRef.current && video.paused) {
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              if (mountedRef.current) {
+                setIsVideoPlaying(true);
+              }
+            })
+            .catch((error) => {
+              console.debug('Video autoplay error:', error);
+              // Fallback to showing the image if autoplay fails
+              setIsVideoPlaying(false);
+            });
+        }
       }
-    });
+    };
 
     video.addEventListener('ended', handleEnded);
+    video.addEventListener('canplay', handleCanPlay);
+
+    // Set initial video source
+    video.src = videos[currentVideo];
+    video.load();
 
     return () => {
       video.removeEventListener('ended', handleEnded);
-      video.pause();
-      nextVideo.pause();
+      video.removeEventListener('canplay', handleCanPlay);
+      if (video.readyState >= 2) {
+        video.pause();
+      }
     };
-  }, [currentVideo, videos, isMobile, isVideoPlaying]);
+  }, [currentVideo, videos]);
 
   return (
     <div className="absolute inset-0">
       {/* Responsive Background Image */}
       <picture>
-        {/* Mobile devices */}
+        {/* Mobile */}
         <source
           media="(max-width: 640px)"
           srcSet={`${fallbackImage}?tr=w-640,h-960,q-60`}
         />
-        {/* Tablets */}
+        {/* Tablet */}
         <source
           media="(max-width: 1024px)"
           srcSet={`${fallbackImage}?tr=w-1024,h-768,q-60`}
         />
-        {/* Desktop - high quality */}
+        {/* Desktop */}
         <img
           src={`${fallbackImage}?tr=w-1920,h-1080,q-75`}
           alt="Background"
@@ -124,7 +99,6 @@ export default function VideoBackground({ fallbackImage }: VideoBackgroundProps)
         />
       </picture>
 
-      {/* Video elements */}
       <video
         ref={videoRef}
         className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${
@@ -132,16 +106,13 @@ export default function VideoBackground({ fallbackImage }: VideoBackgroundProps)
         }`}
         muted
         playsInline
-      />
-
-      <video
-        ref={nextVideoRef}
-        className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-1000"
-        muted
-        playsInline
+        autoPlay
+        preload="auto"
       />
 
       <div className="absolute inset-0 bg-gradient-to-r from-gray-900/90 to-gray-900/70" />
     </div>
   );
-}
+};
+
+export default VideoBackground;

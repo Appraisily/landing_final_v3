@@ -10,11 +10,11 @@ export default function Hero() {
       <div className="relative">
         <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
           <div className="mx-auto max-w-2xl lg:mx-0">
-            <div className="mb-8 inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-sm px-4 py-2">
+            <div className="mb-8 inline-flex items-center gap-2 rounded-lg bg-white/10 backdrop-blur-sm px-4 py-2">
               <img
-                src="https://ik.imagekit.io/appraisily/WebPage/logo.JPG?tr=w-32,h-32"
+                src="https://ik.imagekit.io/appraisily/WebPage/logo_new.png?tr=w-64,h-64"
                 alt="Appraisily"
-                className="h-8 w-auto rounded-full"
+                className="h-8 w-8 object-contain"
                 width="32"
                 height="32"
               />
@@ -71,12 +71,12 @@ export default function Hero() {
       <div className="fixed bottom-8 right-8 z-50">
         <a 
           href="https://appraisily.com"
-          className="flex items-center gap-2 bg-dark-contrast backdrop-blur-sm rounded-full px-4 py-2 shadow-lg hover:bg-white/20 transition-all duration-200 ring-1 ring-white/50"
+          className="flex items-center gap-2 bg-dark-contrast backdrop-blur-sm rounded-lg px-4 py-2 shadow-lg hover:bg-white/20 transition-all duration-200 ring-1 ring-white/50"
         >
           <img
-            src="https://ik.imagekit.io/appraisily/WebPage/logo.JPG?tr=w-24,h-24"
+            src="https://ik.imagekit.io/appraisily/WebPage/logo_new.png?tr=w-64,h-64"
             alt="Appraisily"
-            className="h-6 w-auto rounded-full"
+            className="h-6 w-6 object-contain"
             width="24"
             height="24"
           />

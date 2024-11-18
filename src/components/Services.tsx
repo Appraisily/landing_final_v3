@@ -8,7 +8,7 @@ interface VideoModalProps {
   title: string;
 }
 
-function VideoModal({ isOpen, onClose, videoId, title }: VideoModalProps) {
+const VideoModal: React.FC<VideoModalProps> = ({ isOpen, onClose, videoId, title }) => {
   if (!isOpen) return null;
 
   return (
@@ -44,9 +44,60 @@ function VideoModal({ isOpen, onClose, videoId, title }: VideoModalProps) {
       </div>
     </div>
   );
-}
+};
 
-function Services() {
+const services = [
+  {
+    title: 'Regular Appraisal',
+    description: 'Comprehensive evaluation of your art or antique pieces with detailed market analysis.',
+    icon: Scale,
+    features: [
+      { text: 'Expert Analysis', icon: Search },
+      { text: 'Market Valuation', icon: DollarSign },
+      { text: 'Historical Research', icon: History },
+      { text: 'Documentation', icon: FileText }
+    ],
+    action: {
+      type: 'video',
+      videoId: 'mHxD5DzRKM8',
+      title: 'Regular Appraisal Process'
+    }
+  },
+  {
+    title: 'Insurance Appraisal',
+    description: 'Detailed reports specifically designed for insurance purposes and coverage.',
+    icon: Shield,
+    features: [
+      { text: 'Replacement Value', icon: Receipt },
+      { text: 'Risk Assessment', icon: FileSpreadsheet },
+      { text: 'Digital Documentation', icon: FileCheck },
+      { text: 'Insurance Standards', icon: Award }
+    ],
+    action: {
+      type: 'video',
+      videoId: 'OM_zTNac890',
+      title: 'Insurance Appraisal Process'
+    }
+  },
+  {
+    title: 'Tax Deduction Appraisal',
+    description: 'IRS-compliant appraisals for charitable donations and tax purposes.',
+    icon: FileCheck,
+    features: [
+      { text: 'IRS Compliance', icon: Landmark },
+      { text: 'Fair Market Value', icon: DollarSign },
+      { text: 'Detailed Documentation', icon: FileText },
+      { text: 'Expert Testimony', icon: Award }
+    ],
+    action: {
+      type: 'video',
+      videoId: 'polLX9YL6uo',
+      title: 'Tax Deduction Appraisal Process'
+    }
+  }
+];
+
+const Services: React.FC = () => {
   const [videoModal, setVideoModal] = useState<{
     isOpen: boolean;
     videoId: string;
@@ -56,57 +107,6 @@ function Services() {
     videoId: '',
     title: ''
   });
-
-  const services = [
-    {
-      title: 'Regular Appraisal',
-      description: 'Comprehensive evaluation of your art or antique pieces with detailed market analysis.',
-      icon: Scale,
-      features: [
-        { text: 'Expert Analysis', icon: Search },
-        { text: 'Market Valuation', icon: DollarSign },
-        { text: 'Historical Research', icon: History },
-        { text: 'Documentation', icon: FileText }
-      ],
-      action: {
-        type: 'video',
-        videoId: 'mHxD5DzRKM8',
-        title: 'Regular Appraisal Process'
-      }
-    },
-    {
-      title: 'Insurance Appraisal',
-      description: 'Detailed reports specifically designed for insurance purposes and coverage.',
-      icon: Shield,
-      features: [
-        { text: 'Replacement Value', icon: Receipt },
-        { text: 'Risk Assessment', icon: FileSpreadsheet },
-        { text: 'Digital Documentation', icon: FileCheck },
-        { text: 'Insurance Standards', icon: Award }
-      ],
-      action: {
-        type: 'video',
-        videoId: 'OM_zTNac890',
-        title: 'Insurance Appraisal Process'
-      }
-    },
-    {
-      title: 'Tax Deduction Appraisal',
-      description: 'IRS-compliant appraisals for charitable donations and tax purposes.',
-      icon: FileCheck,
-      features: [
-        { text: 'IRS Compliance', icon: Landmark },
-        { text: 'Fair Market Value', icon: DollarSign },
-        { text: 'Detailed Documentation', icon: FileText },
-        { text: 'Expert Testimony', icon: Award }
-      ],
-      action: {
-        type: 'video',
-        videoId: 'polLX9YL6uo',
-        title: 'Tax Deduction Appraisal Process'
-      }
-    },
-  ];
 
   return (
     <div className="bg-white py-24 sm:py-32">
@@ -173,6 +173,6 @@ function Services() {
       />
     </div>
   );
-}
+};
 
 export default Services;
