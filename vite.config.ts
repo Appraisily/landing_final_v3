@@ -4,7 +4,13 @@ import { splitVendorChunkPlugin } from 'vite';
 
 export default defineConfig({
   plugins: [
-    react(),
+    react({
+      babel: {
+        plugins: [
+          ['babel-plugin-transform-remove-console', { exclude: ['error', 'warn'] }]
+        ]
+      }
+    }),
     splitVendorChunkPlugin()
   ],
   build: {
@@ -16,12 +22,17 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          'react-core': ['react', 'react-dom'],
+          'react-minimal': ['react', 'react-dom/client'],
           'icons': ['lucide-react'],
           'critical': [
             './src/components/Hero.tsx',
-            './src/components/Process.tsx',
-            './src/components/Services.tsx'
+            './src/components/TrustBar.tsx',
+            './src/components/Process.tsx'
+          ],
+          'main': [
+            './src/components/Services.tsx',
+            './src/components/ComparisonTable.tsx',
+            './src/components/SampleReport.tsx'
           ],
           'deferred': [
             './src/components/FAQ.tsx',
@@ -35,7 +46,7 @@ export default defineConfig({
     }
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'lucide-react'],
+    include: ['react', 'react-dom/client', 'lucide-react'],
     exclude: ['@tawk.to/tawk-messenger-react']
   },
   server: {

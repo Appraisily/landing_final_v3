@@ -13,6 +13,8 @@
     <style>
       .bg-white { background-color: #fff; }
       .min-h-screen { min-height: 100vh; }
+      .text-white { color: #fff; }
+      .text-primary { color: rgb(37 99 235); }
     </style>
     
     <!-- Preload Critical Assets -->
@@ -20,49 +22,64 @@
     <link rel="preload" as="image" href="https://ik.imagekit.io/appraisily/WebPage/logo_new.png?tr=w-64,h-64" fetchpriority="high">
     <link rel="modulepreload" href="/src/main.tsx" as="script">
     
-    <!-- GA4 Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-V8T1NRDNC6"></script>
+    <!-- Optimized GA4 Implementation -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-V8T1NRDNC6', {
-        send_page_view: true,
-        transport_type: 'beacon',
-        anonymize_ip: true
-      });
-    </script>
-
-    <!-- Tawk.to Chat Widget -->
-    <script>
-      var Tawk_API = Tawk_API || {};
-      var Tawk_LoadStart = new Date();
-
-      // Configure widget before loading
-      Tawk_API = {
-        onLoad: function() {
-          Tawk_API.setAttributes({
-            'name': 'Visitor',
-            'hash': ''
-          }, function(error) {});
-        },
-        onStatusChange: function(status) {
-          if (status === 'online') {
-            Tawk_API.maximize();
-          }
-        }
+      
+      // Defer GA loading
+      const loadGA = () => {
+        const script = document.createElement('script');
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-V8T1NRDNC6';
+        script.async = true;
+        document.head.appendChild(script);
+        
+        script.onload = () => {
+          gtag('js', new Date());
+          gtag('config', 'G-V8T1NRDNC6', {
+            send_page_view: true,
+            transport_type: 'beacon',
+            anonymize_ip: true,
+            optimization_mode: true
+          });
+        };
       };
 
-      // Load widget
-      (function() {
-        var s1 = document.createElement("script"),
-            s0 = document.getElementsByTagName("script")[0];
+      // Load GA after main content
+      if (window.requestIdleCallback) {
+        requestIdleCallback(loadGA);
+      } else {
+        setTimeout(loadGA, 3000);
+      }
+    </script>
+
+    <!-- Optimized Tawk.to Implementation -->
+    <script>
+      const loadTawkTo = () => {
+        const s1 = document.createElement("script");
         s1.async = true;
         s1.src = 'https://embed.tawk.to/63a083dbb0d6371309d528e2/1gklg645r';
         s1.charset = 'UTF-8';
-        s1.setAttribute('crossorigin', '*');
-        s0.parentNode.insertBefore(s1, s0);
-      })();
+        s1.setAttribute('crossorigin','*');
+        document.head.appendChild(s1);
+
+        // Set widget position to left
+        window.Tawk_API = window.Tawk_API || {};
+        window.Tawk_API.customStyle = {
+          widget: {
+            position: 'left'
+          }
+        };
+      };
+
+      // Load chat widget after page is fully loaded and idle
+      window.addEventListener('load', () => {
+        if (window.requestIdleCallback) {
+          requestIdleCallback(() => setTimeout(loadTawkTo, 3000));
+        } else {
+          setTimeout(loadTawkTo, 3000);
+        }
+      });
     </script>
 
     <link rel="icon" type="image/png" href="https://ik.imagekit.io/appraisily/WebPage/logo_new.png?tr=w-32,h-32" />

@@ -2,18 +2,18 @@ import React, { Suspense, lazy } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 
-// Critical path components
+// Critical path components (immediate load)
 import Hero from './components/Hero';
+import TrustIndicators from './components/TrustIndicators';
 import Process from './components/Process';
-import Services from './components/Services';
 import LoadingSpinner from './components/LoadingSpinner';
 
-// Lazy load non-critical components
-const TrustIndicators = lazy(() => import('./components/TrustIndicators'));
+// Lazy loaded components in conversion-optimized order
+const Services = lazy(() => import('./components/Services'));
 const ComparisonTable = lazy(() => import('./components/ComparisonTable'));
-const CaseStudies = lazy(() => import('./components/CaseStudies'));
 const SampleReport = lazy(() => import('./components/SampleReport'));
 const Experts = lazy(() => import('./components/Experts'));
+const CaseStudies = lazy(() => import('./components/CaseStudies'));
 const WhyChooseUs = lazy(() => import('./components/WhyChooseUs'));
 const Testimonials = lazy(() => import('./components/Testimonials'));
 const FAQ = lazy(() => import('./components/FAQ'));
@@ -23,18 +23,20 @@ const InstantAnalysis = lazy(() => import('./components/InstantAnalysis'));
 function App() {
   return (
     <div className="min-h-screen bg-white">
-      {/* Critical path components */}
+      {/* Immediate attention grabbers */}
       <Hero />
+      <TrustIndicators />
+      
+      {/* Core value proposition */}
       <Process />
-      <Services />
-
-      {/* Lazy loaded components with IntersectionObserver */}
+      
+      {/* Conversion-focused content */}
       <Suspense fallback={<LoadingSpinner />}>
-        <TrustIndicators />
+        <Services />
         <ComparisonTable />
-        <CaseStudies />
         <SampleReport />
         <Experts />
+        <CaseStudies />
         <WhyChooseUs />
         <Testimonials />
         <FAQ />
