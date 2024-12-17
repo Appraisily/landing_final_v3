@@ -24,6 +24,7 @@ const Hero: React.FC = () => {
             <div className="mt-10 flex flex-col sm:flex-row gap-4">
               <a
                 href="https://appraisily.com/start"
+                id="start-appraisal-nav"
                 className="rounded-md bg-primary px-6 py-3 text-lg font-semibold text-white shadow-sm hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all duration-200 flex items-center justify-center gap-2 w-full sm:w-fit"
               >
                 Start Appraisal Now <ArrowRight className="h-5 w-5" />
@@ -41,7 +42,7 @@ const Hero: React.FC = () => {
         <TrustBar />
 
         {/* Floating Brand Badge */}
-        <div className="fixed bottom-8 right-8 z-50">
+        <div className="fixed bottom-8 left-8 z-50">
           <a 
             href="https://appraisily.com"
             className="flex items-center gap-2 bg-dark-contrast backdrop-blur-sm rounded-lg px-4 py-2 shadow-lg hover:bg-white/20 transition-all duration-200 ring-1 ring-white/50"

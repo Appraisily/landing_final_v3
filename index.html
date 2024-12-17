@@ -3,10 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-PSLHDGM');</script>
+    <!-- End Google Tag Manager -->
+
     <!-- Critical Resource Hints -->
     <link rel="preconnect" href="https://ik.imagekit.io" crossorigin>
     <link rel="dns-prefetch" href="https://ik.imagekit.io">
-    <link rel="preconnect" href="https://www.google-analytics.com" crossorigin>
     
     <!-- Inline Critical CSS -->
     <style>
@@ -45,55 +52,6 @@
       fetchpriority="high"
     >
     
-    <!-- Minimal GA4 Implementation -->
-    <script async>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-
-      // Defer GA loading until after page load
-      window.addEventListener('load', () => {
-        requestIdleCallback(() => {
-          const script = document.createElement('script');
-          script.src = 'https://www.google-analytics.com/g/collect?v=2&tid=G-V8T1NRDNC6';
-          script.async = true;
-          document.head.appendChild(script);
-
-          // Initialize GA4
-          gtag('js', new Date());
-          gtag('config', 'G-V8T1NRDNC6', {
-            send_page_view: true,
-            transport_url: 'https://www.google-analytics.com/g/collect',
-            first_party_collection: true
-          });
-        }, { timeout: 3000 });
-      });
-    </script>
-
-    <!-- Deferred Chat Widget -->
-    <script>
-      window.addEventListener('load', () => {
-        requestIdleCallback(() => {
-          setTimeout(() => {
-            const s1 = document.createElement("script");
-            s1.async = true;
-            s1.src = 'https://embed.tawk.to/63a083dbb0d6371309d528e2/1gklg645r';
-            s1.charset = 'UTF-8';
-            s1.setAttribute('crossorigin','*');
-            document.head.appendChild(s1);
-
-            window.Tawk_API = window.Tawk_API || {};
-            window.Tawk_API.customStyle = {
-              visibility: {
-                desktop: {
-                  position: 'bl' // bottom left
-                }
-              }
-            };
-          }, 3000);
-        });
-      });
-    </script>
-
     <link rel="icon" type="image/png" href="https://ik.imagekit.io/appraisily/WebPage/logo_new.png?tr=w-32,h-32" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Expert Art Appraisals | Professional Valuation Services</title>
@@ -101,6 +59,11 @@
     <meta name="theme-color" content="rgb(37 99 235)">
   </head>
   <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PSLHDGM"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

@@ -47,7 +47,7 @@ export default defineConfig({
   },
   optimizeDeps: {
     include: ['react', 'react-dom/client', 'lucide-react'],
-    exclude: ['@tawk.to/tawk-messenger-react']
+    exclude: []
   },
   server: {
     headers: {

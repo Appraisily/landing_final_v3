@@ -116,6 +116,7 @@ export default function Process() {
         <div className="mt-16 flex justify-center">
           <a
             href="https://appraisily.com/start"
+            id="start-appraisal-nav"
             className="rounded-md bg-primary px-6 py-3 text-lg font-semibold text-white shadow-sm hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all duration-200"
           >
             Start Your Appraisal Now
