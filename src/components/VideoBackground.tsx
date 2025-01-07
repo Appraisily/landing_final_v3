@@ -3,10 +3,8 @@ import React, { useState, useRef, useEffect } from 'react';
 const getVideoUrl = (url: string, isMobile: boolean) => {
   // Mobile devices get smaller, more optimized videos
   const width = isMobile ? 360 : 1920;
-  const quality = isMobile ? 60 : 70;
-  // Add additional optimizations for mobile
-  const mobileParams = isMobile ? ',br-30,f-mp4,c-maintain_ratio' : '';
-  return `${url}?tr=w-${width},q-${quality}${mobileParams}`;
+  const quality = isMobile ? 50 : 70;
+  return `${url}?tr=w-${width},q-${quality}`;
 };
 
 interface VideoBackgroundProps {
