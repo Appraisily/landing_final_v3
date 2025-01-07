@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowRight, Award, Shield, Star, Clock, Sparkles, ArrowUp } from 'lucide-react';
-import VideoBackground from './VideoBackground';
+import VideoBackground from './video/VideoBackground';
 import Logo from './Logo';
 import TrustBar from './TrustBar';
 
@@ -27,7 +27,7 @@ const Hero: React.FC = () => {
             </p>
             <div className="mt-10 flex flex-col sm:flex-row gap-4">
               <a
-                href="https://appraisily.com/start"
+                href="https://appraisily.com/start/"
                 id="start-appraisal-nav"
                 className="rounded-md bg-primary px-6 py-3 text-lg font-semibold text-white shadow-sm hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all duration-200 flex items-center justify-center gap-2 w-full sm:w-fit"
               >

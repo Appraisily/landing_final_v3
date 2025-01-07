@@ -26,8 +26,6 @@ function App() {
       {/* Immediate attention grabbers */}
       <Hero />
       <TrustIndicators />
-      
-      {/* Core value proposition */}
       <Process />
       
       {/* Conversion-focused content */}

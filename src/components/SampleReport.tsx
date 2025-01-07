@@ -1,5 +1,24 @@
-import React from 'react';
-import { Ruler, TrendingUp, Award, Download, FileText } from 'lucide-react';
+import React, { useState } from 'react';
+import { Ruler, TrendingUp, Award, Download, FileText, X, ExternalLink } from 'lucide-react';
+
+const PDFViewer = ({ onClose }: { onClose: () => void }) => (
+  <div className="fixed inset-0 z-50 bg-black/75 p-4 flex items-center justify-center">
+    <div className="relative w-full h-[90vh] max-w-4xl mx-auto bg-white rounded-lg overflow-hidden">
+      <button
+        onClick={onClose}
+        className="absolute right-4 top-4 z-10 bg-white rounded-full p-3 shadow-lg hover:bg-gray-100 transition-colors"
+        aria-label="Close PDF viewer"
+      >
+        <X className="h-6 w-6" />
+      </button>
+      <iframe
+        src="https://drive.google.com/file/d/1n-JCAEZJaZDOzQ3mF4GRPmatRKrUsoUn/preview"
+        className="w-full h-full"
+        allow="autoplay"
+      />
+    </div>
+  </div>
+);
 
 const getImageUrl = (url: string) => {
   const isMobile = window.innerWidth <= 768;
@@ -33,6 +52,13 @@ const features = [
 ];
 
 export default function SampleReport() {
+  const [showPDF, setShowPDF] = useState(false);
+
+  const handleViewReport = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setShowPDF(true);
+  };
+
   return (
     <div className="bg-white py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -67,9 +93,8 @@ export default function SampleReport() {
             
             <div className="mt-8 flex justify-center">
               <a
-                href="https://drive.google.com/file/d/1n-JCAEZJaZDOzQ3mF4GRPmatRKrUsoUn/view?pli=1"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="#"
+                onClick={handleViewReport}
                 className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-base font-semibold text-white shadow-md hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all duration-200"
               >
                 <Download className="h-5 w-5" />
@@ -96,9 +121,8 @@ export default function SampleReport() {
 
                 <div className="mt-8">
                   <a
-                    href="https://drive.google.com/file/d/1n-JCAEZJaZDOzQ3mF4GRPmatRKrUsoUn/view?pli=1"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href="#"
+                    onClick={handleViewReport}
                     className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-lg font-semibold text-white shadow-md hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all duration-200"
                   >
                     <Download className="h-5 w-5" />
@@ -122,6 +146,7 @@ export default function SampleReport() {
           </div>
         </div>
       </div>
+      {showPDF && <PDFViewer onClose={() => setShowPDF(false)} />}
     </div>
   );
 }

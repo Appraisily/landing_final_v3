@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Scale, Shield, FileCheck, Search, DollarSign, History, FileText, Clock, Camera, Award, X, Play, Receipt, FileSpreadsheet, Landmark } from 'lucide-react';
 
 interface VideoModalProps {
@@ -8,33 +8,89 @@ interface VideoModalProps {
   title: string;
 }
 
+const useVideoState = () => {
+  const [isMinimized, setIsMinimized] = useState(false);
+  const videoRef = useRef<HTMLIFrameElement>(null);
+  const [isClosing, setIsClosing] = useState(false);
+
+  const minimize = () => {
+    if (videoRef.current) {
+      // Pause video using postMessage
+      videoRef.current.contentWindow?.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+    }
+    setIsMinimized(true);
+  };
+
+  const maximize = () => {
+    setIsMinimized(false);
+    setIsClosing(false);
+  };
+
+  const close = () => {
+    setIsClosing(true);
+    if (videoRef.current) {
+      videoRef.current.contentWindow?.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+    }
+  };
+
+  return { isMinimized, minimize, maximize, close, isClosing, videoRef };
+};
+
 const VideoModal: React.FC<VideoModalProps> = ({ isOpen, onClose, videoId, title }) => {
   if (!isOpen) return null;
 
+  const { isMinimized, minimize, maximize, close, isClosing, videoRef } = useVideoState();
+
+  useEffect(() => {
+    if (isClosing) {
+      const timer = setTimeout(onClose, 300); // Wait for fade out animation
+      return () => clearTimeout(timer);
+    }
+  }, [isClosing, onClose]);
+
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-      <div className="flex min-h-screen items-center justify-center p-4 text-center sm:p-0">
+    <div 
+      className={`fixed inset-0 z-50 overflow-y-auto transition-opacity duration-300 ${
+        isClosing ? 'opacity-0' : 'opacity-100'
+      }`} 
+      aria-labelledby="modal-title" 
+      role="dialog" 
+      aria-modal="true"
+    >
+      <div 
+        className={`flex min-h-screen items-center justify-center p-4 text-center sm:p-0 ${
+          isMinimized ? 'items-end pb-20' : ''
+        }`}
+      >
         <div 
           className="fixed inset-0 bg-gray-900/75 transition-opacity" 
           aria-hidden="true"
-          onClick={onClose}
+          onClick={minimize}
         ></div>
 
-        <div className="relative transform overflow-hidden rounded-lg bg-white shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-4xl">
+        <div 
+          className={`relative transform overflow-hidden rounded-lg bg-white shadow-xl transition-all duration-300 sm:my-8 sm:w-full ${
+            isMinimized ? 'w-64 h-36 fixed bottom-4 right-4' : 'sm:max-w-4xl'
+          }`}
+        >
           <div className="absolute right-4 top-4 z-10">
             <button
               type="button"
               className="rounded-full bg-white/10 p-2 text-white hover:bg-white/20 backdrop-blur-sm"
-              onClick={onClose}
+              onClick={isMinimized ? close : minimize}
             >
               <X className="h-6 w-6" />
             </button>
           </div>
 
-          <div className="aspect-video">
+          <div 
+            className={`aspect-video ${isMinimized ? 'cursor-pointer' : ''}`}
+            onClick={isMinimized ? maximize : undefined}
+          >
             <iframe
+              ref={videoRef}
               className="w-full h-full"
-              src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
+              src={`https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1`}
               title={title}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
@@ -154,8 +210,7 @@ const Services: React.FC = () => {
                   </span>
                 </button>
                 <a
-                  href="https://appraisily.com/start"
-                  id="start-appraisal-nav"
+                  href="https://appraisily.com/start/"
                   className="rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all duration-200 text-center"
                 >
                   Select This Service

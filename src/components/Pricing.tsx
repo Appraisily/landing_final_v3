@@ -92,7 +92,7 @@ export default function Pricing() {
                   <span className="text-sm font-semibold leading-6 tracking-wide text-gray-600">USD</span>
                 </p>
                 <a
-                  href="https://appraisily.com/start"
+                  href="https://appraisily.com/start/"
                   className="mt-10 block w-full rounded-xl bg-primary px-3 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all duration-200"
                 >
                   Start Your Appraisal
@@ -134,7 +134,7 @@ export default function Pricing() {
               </p>
               <div className="mt-8">
                 <a
-                  href="https://appraisily.com/start"
+                  href="https://appraisily.com/start/"
                   className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-4 text-lg font-semibold text-white shadow-md hover:bg-primary/90 hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all duration-200"
                 >
                   Proceed to Secure Checkout
