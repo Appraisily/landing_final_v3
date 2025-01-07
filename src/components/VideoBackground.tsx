@@ -2,9 +2,11 @@ import React, { useState, useRef, useEffect } from 'react';
 
 const getVideoUrl = (url: string, isMobile: boolean) => {
   // Mobile devices get smaller, more optimized videos
-  const width = isMobile ? 640 : 1920;
+  const width = isMobile ? 480 : 1920;
   const quality = isMobile ? 60 : 70;
-  return `${url}?tr=w-${width},q-${quality}`;
+  // Add additional optimizations for mobile
+  const mobileParams = isMobile ? ',br-30,f-mp4' : '';
+  return `${url}?tr=w-${width},q-${quality}${mobileParams}`;
 };
 
 interface VideoBackgroundProps {
@@ -47,6 +49,12 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({ fallbackImage }) => {
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
+    
+    // Don't autoplay videos on mobile to save bandwidth
+    if (isMobile) {
+      setIsVideoPlaying(false);
+      return;
+    }
 
     // Optimize video loading
     video.preload = 'metadata';
@@ -93,8 +101,8 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({ fallbackImage }) => {
       <picture>
         {/* Mobile - Aggressive optimization */}
         <source
-          media="(max-width: 640px)"
-          srcSet={`${fallbackImage}?tr=w-640,h-960,q-60,bl-30,f-jpg`}
+          media="(max-width: 480px)"
+          srcSet={`${fallbackImage}?tr=w-480,h-720,q-50,bl-30,f-jpg`}
           type="image/jpeg"
         />
         {/* Tablet */}

@@ -1,10 +1,14 @@
 import React from 'react';
-import { ArrowRight, Award, Shield, Star, Clock, Sparkles } from 'lucide-react';
+import { ArrowRight, Award, Shield, Star, Clock, Sparkles, ArrowUp } from 'lucide-react';
 import VideoBackground from './VideoBackground';
 import Logo from './Logo';
 import TrustBar from './TrustBar';
 
 const Hero: React.FC = () => {
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div className="relative bg-white">
       <VideoBackground fallbackImage="https://ik.imagekit.io/appraisily/WebPage/hero_background.jpg" />
@@ -43,12 +47,13 @@ const Hero: React.FC = () => {
 
         {/* Floating Brand Badge */}
         <div className="fixed bottom-8 left-8 z-50">
-          <a 
-            href="https://appraisily.com"
-            className="flex items-center gap-2 bg-dark-contrast backdrop-blur-sm rounded-lg px-4 py-2 shadow-lg hover:bg-white/20 transition-all duration-200 ring-1 ring-white/50"
+          <button
+            onClick={scrollToTop}
+            className="flex items-center justify-center bg-dark-contrast backdrop-blur-sm rounded-full p-3 shadow-lg hover:bg-white/20 transition-all duration-200 ring-1 ring-white/50"
+            aria-label="Scroll to top"
           >
-            <Logo variant="light" size="sm" />
-          </a>
+            <ArrowUp className="h-5 w-5 text-white" />
+          </button>
         </div>
       </div>
     </div>
