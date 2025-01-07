@@ -78,7 +78,7 @@ export default function InstantAnalysis() {
               </div>
               <div className="relative rounded-xl overflow-hidden">
                 <img
-                  src="https://ik.imagekit.io/appraisily/WebPage/appraisily.com_an_image_for_an_online_art_appraisal_service_tha_aa009cf3-7aa8-493f-a3e5-6dee036f5311.png?tr=w-800,h-600,q-70"
+                  src="https://ik.imagekit.io/appraisily/WebPage/image_screener.JPG?tr=w-800,h-600,q-70"
                   alt="AI Analysis Demo"
                   className="w-full h-full object-cover"
                   width="800"

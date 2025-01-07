@@ -25,6 +25,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({ fallbackImage }) => {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const nextVideoRef = useRef<HTMLVideoElement>(null);
   const mountedRef = useRef(true);
   const videoLoadTimeoutRef = useRef<NodeJS.Timeout>();
 
@@ -82,21 +83,24 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({ fallbackImage }) => {
     video.preload = 'metadata';
     video.muted = true;
     video.playsInline = true;
-    video.addEventListener('canplay', () => {
-      setIsVideoLoaded(true);
-    });
     video.src = getVideoUrl(videos[currentVideo], isMobile);
     video.load();
 
-    // Preload next video
-    const nextVideo = new Audio();
-    nextVideo.preload = 'metadata';
-    nextVideo.src = getVideoUrl(videos[(currentVideo + 1) % videos.length], isMobile);
+    // Set up next video
+    const nextVideo = nextVideoRef.current;
+    if (nextVideo) {
+      nextVideo.preload = 'metadata';
+      nextVideo.muted = true;
+      nextVideo.playsInline = true;
+      nextVideo.src = getVideoUrl(videos[(currentVideo + 1) % videos.length], isMobile);
+      nextVideo.load();
+    }
 
     const playVideo = async () => {
       try {
         await video.play();
         if (mountedRef.current) {
+          setIsVideoLoaded(true);
           setIsVideoPlaying(shouldPlayVideo);
         }
       } catch (error) {
@@ -106,7 +110,12 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({ fallbackImage }) => {
 
     const handleEnded = () => {
       if (!mountedRef.current) return;
-      setCurrentVideo((prev) => (prev + 1) % videos.length);
+      // Start playing next video before switching
+      if (nextVideo) {
+        nextVideo.play().then(() => {
+          setCurrentVideo((prev) => (prev + 1) % videos.length);
+        });
+      }
     };
 
     video.addEventListener('loadedmetadata', playVideo);
@@ -118,7 +127,6 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({ fallbackImage }) => {
       video.pause();
       video.src = '';
       video.load();
-      nextVideo.src = '';
       setIsVideoLoaded(false);
     };
   };
@@ -164,6 +172,12 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({ fallbackImage }) => {
         className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${
           isVideoPlaying && isVideoLoaded ? 'opacity-100' : 'opacity-0'
         }`}
+        muted
+        playsInline
+      />
+      <video
+        ref={nextVideoRef}
+        className="hidden"
         muted
         playsInline
       />
