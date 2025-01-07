@@ -34,10 +34,10 @@ const Hero: React.FC = () => {
                 Start Appraisal Now <ArrowRight className="h-5 w-5" />
               </a>
               <a
-                href="https://screener.appraisily.com"
+                href="https://screener.appraisily.com/"
                 className="rounded-md bg-dark-contrast backdrop-blur-sm px-6 py-3 text-lg font-semibold text-white hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/50 transition-all duration-200 flex items-center justify-center gap-2 w-full sm:w-fit ring-1 ring-white/50"
               >
-                Try Free AI Analysis <Sparkles className="h-5 w-5" />
+                Instant Art Prescreener <Sparkles className="h-5 w-5" />
               </a>
             </div>
           </div>

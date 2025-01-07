@@ -7,10 +7,10 @@ export default function InstantAnalysis() {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            Try Our Free AI Analysis
+            Instant Art Prescreener™
           </h2>
           <p className="mt-6 text-lg leading-8 text-gray-600">
-            Upload your artwork and instantly receive AI-powered insights before proceeding with professional appraisal
+            Our proprietary AI technology provides instant artwork analysis and preliminary value insights
           </p>
         </div>
 
@@ -47,10 +47,10 @@ export default function InstantAnalysis() {
 
               <div className="mt-12 flex justify-center">
                 <a
-                  href="https://screener.appraisily.com"
+                  href="https://screener.appraisily.com/"
                   className="inline-flex items-center gap-2 rounded-xl bg-primary px-8 py-4 text-lg font-semibold text-white shadow-md hover:bg-primary/90 hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all duration-200"
                 >
-                  Try Free Analysis
+                  Start Prescreening
                   <ArrowRight className="h-5 w-5" />
                 </a>
               </div>
