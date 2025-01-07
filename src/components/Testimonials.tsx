@@ -1,45 +1,53 @@
 import React from 'react';
 import { Star } from 'lucide-react';
 
+const getImageUrl = (url: string) => {
+  const isMobile = window.innerWidth <= 768;
+  const width = isMobile ? 400 : 800;
+  const height = Math.round(width * 0.75); // Maintain aspect ratio
+  const quality = isMobile ? 60 : 70;
+  return `${url}?tr=w-${width},h-${height},q-${quality}`;
+};
+
 const reviews = [
   {
     id: 1,
-    image: "https://ik.imagekit.io/appraisily/WebPage/review1.jpg?tr=w-800,h-600,q-70",
+    image: "https://ik.imagekit.io/appraisily/WebPage/review1.jpg",
     author: "Sarah M.",
     rating: 5,
     text: "Exceptional service! The appraisal was thorough and professional. Highly recommend!"
   },
   {
     id: 2,
-    image: "https://ik.imagekit.io/appraisily/WebPage/review2.jpg?tr=w-800,h-600,q-70",
+    image: "https://ik.imagekit.io/appraisily/WebPage/review2.jpg",
     author: "James R.",
     rating: 5,
     text: "Quick turnaround and very detailed report. Worth every penny!"
   },
   {
     id: 3,
-    image: "https://ik.imagekit.io/appraisily/WebPage/review3.jpg?tr=w-800,h-600,q-70",
+    image: "https://ik.imagekit.io/appraisily/WebPage/review3.jpg",
     author: "Emily K.",
     rating: 5,
     text: "The expertise and attention to detail was impressive. Great communication throughout."
   },
   {
     id: 4,
-    image: "https://ik.imagekit.io/appraisily/WebPage/review4.jpg?tr=w-800,h-600,q-70",
+    image: "https://ik.imagekit.io/appraisily/WebPage/review4.jpg",
     author: "Michael P.",
     rating: 5,
     text: "Very professional service. The report exceeded my expectations!"
   },
   {
     id: 5,
-    image: "https://ik.imagekit.io/appraisily/WebPage/review5.jpg?tr=w-800,h-600,q-70",
+    image: "https://ik.imagekit.io/appraisily/WebPage/review5.jpg",
     author: "Lisa T.",
     rating: 5,
     text: "Fantastic experience from start to finish. Highly knowledgeable team!"
   },
   {
     id: 6,
-    image: "https://ik.imagekit.io/appraisily/WebPage/review6.jpg?tr=w-800,h-600,q-70",
+    image: "https://ik.imagekit.io/appraisily/WebPage/review6.jpg",
     author: "David W.",
     rating: 5,
     text: "The most comprehensive art appraisal service I've used. Excellent value!"
@@ -72,13 +80,13 @@ export default function Testimonials() {
                   ))}
                 </div>
                 <img
-                  src={review.image}
+                  src={getImageUrl(review.image)}
                   alt={`${review.author}'s review`}
                   className="mt-6 rounded-lg shadow-sm w-full h-auto"
                   loading="lazy"
                   decoding="async"
-                  width="800"
-                  height="600"
+                  width={window.innerWidth <= 768 ? "400" : "800"}
+                  height={window.innerWidth <= 768 ? "300" : "600"}
                 />
                 <p className="mt-6 text-base leading-7 text-gray-600">"{review.text}"</p>
               </div>

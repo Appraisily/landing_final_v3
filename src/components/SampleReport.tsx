@@ -1,6 +1,14 @@
 import React from 'react';
 import { Ruler, TrendingUp, Award, Download, FileText } from 'lucide-react';
 
+const getImageUrl = (url: string) => {
+  const isMobile = window.innerWidth <= 768;
+  const width = isMobile ? 400 : 800;
+  const height = Math.round(width * 1.25); // Maintain aspect ratio
+  const quality = isMobile ? 60 : 70;
+  return `${url}?tr=w-${width},h-${height},q-${quality}`;
+};
+
 const features = [
   {
     icon: Ruler,
@@ -102,12 +110,10 @@ export default function SampleReport() {
               <div className="relative">
                 <div className="aspect-[4/5] overflow-hidden rounded-2xl bg-white p-4 shadow-lg ring-1 ring-gray-200">
                   <img
-                    src="https://ik.imagekit.io/appraisily/WebPage/report.jpg?tr=w-800,h-1000,q-70"
+                    src={getImageUrl("https://ik.imagekit.io/appraisily/WebPage/report.jpg")}
                     alt="Sample appraisal report preview"
                     className="h-full w-full object-cover rounded-lg"
                     loading="lazy"
-                    width="800"
-                    height="1000"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-gray-900/50 to-transparent rounded-2xl"></div>
                 </div>

@@ -1,25 +1,45 @@
 import React, { useState, useRef, useEffect } from 'react';
 
+const getVideoUrl = (url: string, isMobile: boolean) => {
+  // Mobile devices get smaller, more optimized videos
+  const width = isMobile ? 640 : 1920;
+  const quality = isMobile ? 60 : 70;
+  return `${url}?tr=w-${width},q-${quality}`;
+};
+
 interface VideoBackgroundProps {
   fallbackImage: string;
 }
 
 const videos = [
-  'https://ik.imagekit.io/appraisily/Videos/hero1.mp4?tr=w-1920,q-70',
-  'https://ik.imagekit.io/appraisily/Videos/hero2.mp4?tr=w-1920,q-70',
-  'https://ik.imagekit.io/appraisily/Videos/hero3.mp4?tr=w-1920,q-70',
-  'https://ik.imagekit.io/appraisily/Videos/hero4.mp4?tr=w-1920,q-70',
-  'https://ik.imagekit.io/appraisily/Videos/hero5.mp4?tr=w-1920,q-70'
+  'https://ik.imagekit.io/appraisily/Videos/hero1.mp4',
+  'https://ik.imagekit.io/appraisily/Videos/hero2.mp4',
+  'https://ik.imagekit.io/appraisily/Videos/hero3.mp4',
+  'https://ik.imagekit.io/appraisily/Videos/hero4.mp4',
+  'https://ik.imagekit.io/appraisily/Videos/hero5.mp4'
 ];
 
 const VideoBackground: React.FC<VideoBackgroundProps> = ({ fallbackImage }) => {
   const [currentVideo, setCurrentVideo] = useState(0);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const mountedRef = useRef(true);
 
   useEffect(() => {
+    // Check if device is mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    // Initial check
+    checkMobile();
+
+    // Add resize listener
+    window.addEventListener('resize', checkMobile);
+
     return () => {
+      window.removeEventListener('resize', checkMobile);
       mountedRef.current = false;
     };
   }, []);
@@ -32,13 +52,13 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({ fallbackImage }) => {
     video.preload = 'metadata';
     video.muted = true;
     video.playsInline = true;
-    video.src = videos[currentVideo];
+    video.src = getVideoUrl(videos[currentVideo], isMobile);
     video.load();
 
     // Preload next video
     const nextVideo = new Audio();
     nextVideo.preload = 'metadata';
-    nextVideo.src = videos[(currentVideo + 1) % videos.length];
+    nextVideo.src = getVideoUrl(videos[(currentVideo + 1) % videos.length], isMobile);
 
     const playVideo = async () => {
       try {

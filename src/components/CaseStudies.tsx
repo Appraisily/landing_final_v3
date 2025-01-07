@@ -1,10 +1,18 @@
 import React from 'react';
 import { TrendingUp, DollarSign, History, ExternalLink } from 'lucide-react';
 
+const getImageUrl = (url: string) => {
+  const isMobile = window.innerWidth <= 768;
+  const width = isMobile ? 400 : 800;
+  const height = Math.round(width * 0.75); // Maintain aspect ratio
+  const quality = isMobile ? 60 : 70;
+  return `${url}?tr=w-${width},h-${height},q-${quality}`;
+};
+
 const cases = [
   {
     id: 1,
-    image: "https://ik.imagekit.io/appraisily/WebPage/gallery1.jpg?tr=w-800,h-600,q-70",
+    image: "https://ik.imagekit.io/appraisily/WebPage/gallery1.jpg",
     title: "Surrealist Abstract by Tom Kidd",
     description: "Original hand-made surrealist abstract painting by Tom Kidd (B.1955). Renowned for his fine quality work, Kidd's piece was directly purchased from the artist and was featured as a book cover.",
     initialEstimate: "$800",
@@ -13,7 +21,7 @@ const cases = [
   },
   {
     id: 2,
-    image: "https://ik.imagekit.io/appraisily/WebPage/gallery2.jpg?tr=w-800,h-600,q-70",
+    image: "https://ik.imagekit.io/appraisily/WebPage/gallery2.jpg",
     title: "17th Century Dutch Portrait",
     description: "Early to mid 17th-century painting attributed to Dutch Golden Age painter Frans Hals the Elder. Features a dignified individual seated with a possible string instrument, adorned in period clothing.",
     initialEstimate: "Unknown",
@@ -22,7 +30,7 @@ const cases = [
   },
   {
     id: 3,
-    image: "https://ik.imagekit.io/appraisily/WebPage/gallery3.jpg?tr=w-800,h-600,q-70",
+    image: "https://ik.imagekit.io/appraisily/WebPage/gallery3.jpg",
     title: "Adriaen Brouwer Tavern Scene",
     description: "17th century Dutch tavern interior by Flemish master Adriaen Brouwer (c. 1605 – 1638). Known for his unique style and mastery of chiaroscuro, displaying fantastic imagination with mysterious luminosity.",
     initialEstimate: "$2,000",
@@ -31,7 +39,7 @@ const cases = [
   },
   {
     id: 4,
-    image: "https://ik.imagekit.io/appraisily/WebPage/gallery4.jpg?tr=w-800,h-600,q-70",
+    image: "https://ik.imagekit.io/appraisily/WebPage/gallery4.jpg",
     title: "Forest Scene by Himmy",
     description: "Mid to late 20th century oil painting by German artist Himmy, depicting a serene forest path with two figures. Features tranquil earthy tones and masterful composition.",
     initialEstimate: "$300",
@@ -40,7 +48,7 @@ const cases = [
   },
   {
     id: 5,
-    image: "https://ik.imagekit.io/appraisily/WebPage/gallery5.jpg?tr=w-800,h-600,q-70",
+    image: "https://ik.imagekit.io/appraisily/WebPage/gallery5.jpg",
     title: "Sunrise Dancers Holbein",
     description: "Contemporary piece by Patrice Le Pera depicting traditional dancers at dawn. Women in traditional attire carry green plants through a vibrant landscape, symbolizing community and tradition.",
     initialEstimate: "$3,500",
@@ -49,7 +57,7 @@ const cases = [
   },
   {
     id: 6,
-    image: "https://ik.imagekit.io/appraisily/WebPage/gallery6.jpg?tr=w-800,h-600,q-70",
+    image: "https://ik.imagekit.io/appraisily/WebPage/gallery6.jpg",
     title: "Designer Life by Wiley Ross",
     description: "36×24 oil on glass painting with back light illumination by Springfield artist Wiley Ross. Modern portrait with abstract elements against vibrant red and orange background.",
     initialEstimate: "$2,500",
@@ -83,11 +91,11 @@ export default function CaseStudies() {
               <div className="relative flex-shrink-0 overflow-hidden">
                 <img
                   className="h-48 w-full object-cover transition-transform duration-300 group-hover:scale-110"
-                  src={case_.image}
+                  src={getImageUrl(case_.image)}
                   alt={case_.title}
                   loading="lazy"
-                  width="800"
-                  height="600"
+                  width={window.innerWidth <= 768 ? "400" : "800"}
+                  height={window.innerWidth <= 768 ? "300" : "600"}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900/75 to-transparent"></div>
                 <div className="absolute bottom-4 left-4 right-4">
