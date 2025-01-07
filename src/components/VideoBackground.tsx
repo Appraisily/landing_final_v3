@@ -2,10 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 
 const getVideoUrl = (url: string, isMobile: boolean) => {
   // Mobile devices get smaller, more optimized videos
-  const width = isMobile ? 480 : 1920;
+  const width = isMobile ? 360 : 1920;
   const quality = isMobile ? 60 : 70;
   // Add additional optimizations for mobile
-  const mobileParams = isMobile ? ',br-30,f-mp4' : '';
+  const mobileParams = isMobile ? ',br-30,f-mp4,c-maintain_ratio' : '';
   return `${url}?tr=w-${width},q-${quality}${mobileParams}`;
 };
 
@@ -24,14 +24,22 @@ const videos = [
 const VideoBackground: React.FC<VideoBackgroundProps> = ({ fallbackImage }) => {
   const [currentVideo, setCurrentVideo] = useState(0);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const mountedRef = useRef(true);
+  const videoLoadTimeoutRef = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
     // Check if device is mobile
     const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+      // Reload video with correct size if already playing
+      if (videoRef.current && isVideoPlaying) {
+        videoRef.current.src = getVideoUrl(videos[currentVideo], mobile);
+        videoRef.current.load();
+      }
     };
 
     // Initial check
@@ -43,23 +51,42 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({ fallbackImage }) => {
     return () => {
       window.removeEventListener('resize', checkMobile);
       mountedRef.current = false;
+      if (videoLoadTimeoutRef.current) {
+        clearTimeout(videoLoadTimeoutRef.current);
+      }
     };
   }, []);
 
   useEffect(() => {
+    if (!mountedRef.current) return;
+    
+    // Don't load videos immediately, wait for the page to be interactive
+    videoLoadTimeoutRef.current = setTimeout(() => {
+      loadVideo();
+    }, 2000); // Wait 2 seconds before loading video
+    
+    return () => {
+      if (!mountedRef.current) return;
+      if (videoLoadTimeoutRef.current) {
+        clearTimeout(videoLoadTimeoutRef.current);
+      }
+    };
+  }, [isMobile]);
+
+  const loadVideo = () => {
     const video = videoRef.current;
     if (!video) return;
     
     // Don't autoplay videos on mobile to save bandwidth
-    if (isMobile) {
-      setIsVideoPlaying(false);
-      return;
-    }
+    const shouldPlayVideo = !isMobile || window.matchMedia('(prefers-reduced-data: no-preference)').matches;
 
     // Optimize video loading
     video.preload = 'metadata';
     video.muted = true;
     video.playsInline = true;
+    video.addEventListener('canplay', () => {
+      setIsVideoLoaded(true);
+    });
     video.src = getVideoUrl(videos[currentVideo], isMobile);
     video.load();
 
@@ -71,7 +98,9 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({ fallbackImage }) => {
     const playVideo = async () => {
       try {
         await video.play();
-        setIsVideoPlaying(true);
+        if (mountedRef.current) {
+          setIsVideoPlaying(shouldPlayVideo);
+        }
       } catch (error) {
         console.debug('Video playback error:', error);
       }
@@ -92,8 +121,9 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({ fallbackImage }) => {
       video.src = '';
       video.load();
       nextVideo.src = '';
+      setIsVideoLoaded(false);
     };
-  }, [currentVideo]);
+  };
 
   return (
     <div className="absolute inset-0">
@@ -134,7 +164,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({ fallbackImage }) => {
       <video
         ref={videoRef}
         className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${
-          isVideoPlaying ? 'opacity-100' : 'opacity-0'
+          isVideoPlaying && isVideoLoaded ? 'opacity-100' : 'opacity-0'
         }`}
         muted
         playsInline
