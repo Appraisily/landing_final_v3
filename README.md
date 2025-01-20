@@ -1,144 +1,77 @@
-# landing_final_v3
+# Art Appraisal Landing Pages
 
-[Edit in StackBlitz next generation editor ⚡️](https://stackblitz.com/~/github.com/Appraisily/landing_final_v3)
+A modern React application showcasing two landing pages for art appraisal services.
 
-## React Hooks Guidelines
+## Live URLs
 
-To prevent crashes and ensure proper hooks usage:
+- Painting Value Check: [https://creative-squirrel-688c9c.netlify.app/painting-value](https://creative-squirrel-688c9c.netlify.app/painting-value)
+- Art Appraiser: [https://creative-squirrel-688c9c.netlify.app/art-appraiser](https://creative-squirrel-688c9c.netlify.app/art-appraiser)
 
-1. Only call hooks at the top level of your function component
-2. Don't call hooks inside loops, conditions, or nested functions
-3. Always import React when using hooks
-4. Use proper TypeScript types for hooks
-5. Ensure component names start with a capital letter
-6. Export components as named or default exports
+## Tech Stack
 
-```typescript
-// ✅ Correct hooks usage
-import React, { useState, useEffect } from 'react';
+- React 18 with TypeScript
+- Vite for build tooling
+- TailwindCSS for styling
+- Lucide React for icons
+- React Router for navigation
 
-const ExampleComponent: React.FC = () => {
-  const [state, setState] = useState(initialValue);
-  
-  useEffect(() => {
-    // Effect code
-  }, []);
+## Features
 
-  return <div>{/* Component JSX */}</div>;
-};
+- Responsive design optimized for all devices
+- Performance optimized with code splitting and lazy loading
+- Beautiful animations and transitions
+- SEO friendly with proper meta tags
+- Optimized image loading with ImageKit.io
+- Google Tag Manager integration
 
-export default ExampleComponent;
+## Development
 
-// ❌ Incorrect hooks usage
-function exampleComponent() {
-  if (condition) {
-    const [state, setState] = useState(value); // Don't use hooks in conditions
-  }
+```bash
+# Install dependencies
+npm install
 
-  useEffect(() => {}); // Missing dependency array
-}
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
 ```
 
-## Component Export Guidelines
+## Project Structure
 
-When creating React components, always use one of these export patterns to avoid the "Module does not provide an export named 'default'" error:
-
-```typescript
-// Option 1: Default export (Preferred)
-const Component: React.FC = () => {
-  return <div>Component content</div>;
-};
-
-export default Component;
-
-// Option 2: Named export with default
-export const Component: React.FC = () => {
-  return <div>Component content</div>;
-};
-
-export default Component;
-
-// Option 3: Named export (requires named import)
-export const Component: React.FC = () => {
-  return <div>Component content</div>;
-};
-
-// Then import using:
-import { Component } from './Component';
+```
+src/
+├── components/     # Reusable UI components
+├── pages/         # Page components
+│   ├── PaintingAppraisal.tsx   # Painting value check page
+│   └── ArtAppraiser.tsx        # Art appraiser page
+├── main.tsx       # Application entry point
+└── index.css      # Global styles
 ```
 
-## Error Boundaries
+## Performance Optimizations
 
-Always wrap lazy-loaded components with error boundaries to handle potential loading errors:
+- Code splitting with dynamic imports
+- Image optimization with ImageKit.io
+- Critical CSS inlining
+- Resource hints (preconnect, dns-prefetch)
+- Lazy loading of non-critical components
+- Efficient bundle chunking strategy
 
-```typescript
-// ErrorBoundary.tsx
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+## Deployment
 
-interface Props {
-  children: ReactNode;
-}
+The application is deployed on Netlify with automatic deployments from the main branch. The build configuration is defined in `netlify.toml` with:
 
-interface State {
-  hasError: boolean;
-}
+- Custom cache headers
+- Security headers
+- Asset optimization
+- Proper redirects for SPA routing
 
-class ErrorBoundary extends Component<Props, State> {
-  public state: State = {
-    hasError: false
-  };
+## Browser Support
 
-  public static getDerivedStateFromError(_: Error): State {
-    return { hasError: true };
-  }
-
-  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('Uncaught error:', error, errorInfo);
-  }
-
-  public render() {
-    if (this.state.hasError) {
-      return <div>Something went wrong. Please try again.</div>;
-    }
-
-    return this.props.children;
-  }
-}
-
-export default ErrorBoundary;
-
-// Usage in App.tsx
-import ErrorBoundary from './ErrorBoundary';
-
-// Wrap lazy components
-<ErrorBoundary>
-  <Suspense fallback={<LoadingSpinner />}>
-    <LazyComponent />
-  </Suspense>
-</ErrorBoundary>
-```
-
-## Component Checklist
-
-When creating or modifying components:
-
-1. ✅ Use proper export syntax (default or named)
-2. ✅ Wrap lazy-loaded components with error boundaries
-3. ✅ Include proper TypeScript types
-4. ✅ Handle loading states with Suspense
-5. ✅ Implement proper error handling
-6. ✅ Use semantic HTML elements
-7. ✅ Follow accessibility guidelines
-8. ✅ Optimize performance (useMemo, useCallback when needed)
-9. ✅ Implement responsive design
-10. ✅ Use consistent styling patterns
-
-## Performance Optimization
-
-- Use lazy loading for non-critical components
-- Implement proper code splitting
-- Optimize images using ImageKit.io
-- Minimize bundle size
-- Use proper caching strategies
-- Implement proper loading states
-- Handle errors gracefully
+- Modern browsers (Chrome, Firefox, Safari, Edge)
+- Responsive design works on all screen sizes
+- Progressive enhancement for older browsers

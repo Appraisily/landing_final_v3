@@ -14,6 +14,7 @@ export default defineConfig({
     splitVendorChunkPlugin()
   ],
   build: {
+    cssCodeSplit: false,
     target: 'esnext',
     minify: 'esbuild',
     cssMinify: true,
@@ -22,31 +23,23 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          'react-minimal': ['react', 'react-dom/client'],
+          'vendor': ['react', 'react-dom', 'react-router-dom'],
           'icons': ['lucide-react'],
           'critical': [
-            './src/components/Hero.tsx',
-            './src/components/TrustBar.tsx',
-            './src/components/Process.tsx'
-          ],
-          'main': [
-            './src/components/Services.tsx',
-            './src/components/ComparisonTable.tsx',
-            './src/components/SampleReport.tsx'
+            './src/components/HeroSplitScreen.tsx',
+            './src/components/Logo.tsx'
           ],
           'deferred': [
-            './src/components/FAQ.tsx',
-            './src/components/Pricing.tsx',
-            './src/components/Testimonials.tsx',
-            './src/components/WhyChooseUs.tsx',
-            './src/components/CaseStudies.tsx'
+            './src/components/TrustFooter.tsx',
+            './src/components/ExpertProfile.tsx'
           ]
         }
       }
-    }
+    },
+    assetsInlineLimit: 0
   },
   optimizeDeps: {
-    include: ['react', 'react-dom/client', 'lucide-react'],
+    include: ['react', 'react-dom/client', 'lucide-react', 'react-router-dom'],
     exclude: []
   },
   server: {

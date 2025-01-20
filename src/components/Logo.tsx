@@ -2,34 +2,39 @@ import React from 'react';
 
 interface LogoProps {
   variant?: 'default' | 'light' | 'dark';
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'xs' | 'sm' | 'md' | 'lg';
 }
 
+const sizes = {
+  xs: {
+    img: 'h-5 w-5',
+    text: 'text-base',
+    spacing: 'gap-1'
+  },
+  sm: {
+    img: 'h-6 w-6',
+    text: 'text-lg',
+    spacing: 'gap-1'
+  },
+  md: {
+    img: 'h-8 w-8',
+    text: 'text-xl',
+    spacing: 'gap-2'
+  },
+  lg: {
+    img: 'h-10 w-10',
+    text: 'text-2xl',
+    spacing: 'gap-3'
+  }
+};
+
+const textColors = {
+  default: 'text-gray-900',
+  light: 'text-white',
+  dark: 'text-gray-900'
+};
+
 const Logo: React.FC<LogoProps> = ({ variant = 'default', size = 'md' }) => {
-  const sizes = {
-    sm: {
-      img: 'h-6 w-6',
-      text: 'text-lg',
-      spacing: 'gap-1'
-    },
-    md: {
-      img: 'h-8 w-8',
-      text: 'text-xl',
-      spacing: 'gap-2'
-    },
-    lg: {
-      img: 'h-10 w-10',
-      text: 'text-2xl',
-      spacing: 'gap-3'
-    }
-  };
-
-  const textColors = {
-    default: 'text-gray-900',
-    light: 'text-white',
-    dark: 'text-gray-900'
-  };
-
   const selectedSize = sizes[size];
 
   return (

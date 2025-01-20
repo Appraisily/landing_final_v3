@@ -2,7 +2,6 @@
 [build]
   command = "npm run build"
   publish = "dist"
-  base = "/"
 
 # Specific site configuration
 [build.environment]
@@ -11,10 +10,19 @@
 
 # Redirects
 [[redirects]]
-  from = "/art-screener/*"
-  to = "https://singular-yeot-74a84e.netlify.app/:splat"
+  from = "/art-appraiser/*"
+  to = "/art-appraiser/index.html"
   status = 200
-  force = true
+
+[[redirects]]
+  from = "/painting-value/*"
+  to = "/painting-value/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
 
 # Headers for security and caching
 [[headers]]

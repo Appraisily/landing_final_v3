@@ -52,15 +52,16 @@ const WhyChooseUs: React.FC = () => {
             {features.map((feature) => (
               <div
                 key={feature.title}
-                className="relative overflow-hidden rounded-2xl bg-white p-8 shadow-sm ring-1 ring-gray-200 hover:shadow-lg transition-all duration-200"
+                className="relative overflow-hidden rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-200 hover:shadow-lg transition-all duration-200"
               >
-                <div className="absolute right-0 top-0 -ml-8 origin-top-right rotate-45 transform bg-primary/10 p-8"></div>
                 <div className="relative">
-                  <div className="rounded-lg bg-primary/10 p-3 w-fit">
-                    <feature.icon className="h-6 w-6 text-primary" />
+                  <div className="flex items-center gap-4">
+                    <div className="rounded-lg bg-primary/10 p-2.5 flex-shrink-0">
+                      <feature.icon className="h-5 w-5 text-primary" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-900">{feature.title}</h3>
                   </div>
-                  <h3 className="mt-6 text-xl font-semibold text-gray-900">{feature.title}</h3>
-                  <p className="mt-4 text-base leading-7 text-gray-600">{feature.description}</p>
+                  <p className="mt-3 text-sm leading-6 text-gray-600">{feature.description}</p>
                 </div>
               </div>
             ))}
